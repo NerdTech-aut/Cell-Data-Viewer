@@ -1,0 +1,1097 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CM CSV Data Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="./assets/resources/file-bar-graph-fill.svg"/>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css"
+  />
+
+  <style>
+    html, body {
+      -ms-overflow-style: none;  /* IE, old Edge */
+      scrollbar-width: none;     /* Firefox */
+    }
+
+    /* Chrome, Safari, new Edge, Opera */
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    body {
+      height: 100dvh;
+    }
+
+    .cursor-pointer {
+      cursor: pointer;
+    }
+
+    .cursor-default {
+      cursor: default;
+    }
+
+    .small-text,
+    .marker-popup {
+      font-size: 0.875rem; /*14px*/
+    }
+
+    .dropdown-menu-scrollable {
+      max-height: 15.625rem; /*250px*/
+    }
+
+    @media (max-width: 767px) {
+      #map {
+        height: calc(100dvh - 12.462rem); /*199.392px*/
+      }
+
+      .leaflet-tooltip {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-primary-subtle d-flex flex-column" data-bs-theme="dark"> <!-- body with a dark blue background and a dark color theme as a flexible column-->
+  <nav class="navbar bg-dark border-bottom border-secondary"> <!-- styled navbar with a dark background and a border at the bottom with a light color -->
+    <div class="container-fluid"> <!-- always full width container -->
+      <div class="d-flex flex-column cursor-default"> <!-- flexible in vertical orientation with default cursor override -->
+        <h1 class="navbar-brand mb-0"> <!-- the brand of the website with no margin bottom -->
+          <i class="bi bi-file-bar-graph-fill"></i> <!-- bootstrap icons reception bars --> CM CSV Data Viewer
+        </h1>
+        <h2 class="text-secondary m-0 small-text">by NerdTech</h2><!-- gray text with no margin and a custom small text -->
+      </div>
+      <a href="https://github.com/NerdTech-aut/cmcdv" class="text-decoration-none text-secondary cursor-pointer" target="_blank"> <!-- link with no text decoration, gray text and default cursor override -->
+        <span><i class="bi bi-file-earmark-code"></i> <!-- bootstrap code icon --> GitHub</span>
+      </a>
+    </div>
+  </nav>
+  <div class="container-fluid d-flex flex-grow-1 py-3"> <!-- always full width flexible container which always fills the screen height with 1rem padding top & bottom -->
+    <div class="row flex-grow-1 g-3"> <!-- row which always fills the screen height with a gutter between columns of 1.5rem -->
+      <div class="col-12 col-md-5 col-xl-4 col-xxl-3"> <!-- element either spanning all 12/12 columns on screen-width < 768px, spanning 5/12 columns on screen-width >= 768px, spanning 4/12 columns on screen-width >= 1200 and spanning 3/12 columns on screen-width >= 1400px -->
+        <div class="card h-100 rounded-4 border-secondary-subtle bg-secondary-subtle"> <!-- a card with 100% height in relation to the parent element, a 1rem rounded & subtle lighter border and darker background -->
+          <div class="card-header d-md-none cursor-pointer rounded-top-4" data-bs-toggle="collapse" data-bs-target="#filtersCardBody" aria-expanded="true" aria-controls="filtersCardBody" id="mobileHeader"> <!-- header of the card for screen-width < 768px, controls the manual collapsing of the card body, has a manual override for the cursor as a pointer and a border radius for the top-->
+            <h5 class="card-title mb-0 text-light d-flex justify-content-between align-items-center">  <!-- title of the card with no margin bottom and light text as a flexbox which pushes the two items inside apart and vertically centers the items -->
+              <span>Data & Filters</span>
+              <i class="bi bi-chevron-down" id="collapseIcon"></i> <!-- bootstrap icons down arrow -->
+            </h5>
+          </div>
+          <div id="filtersCardBody" class="card-body collapse show"> <!-- card body which is collapsable but not collapsed on load -->
+            <h5 class="card-title mb-3 text-light d-none d-md-block">Data & Filters</h5>  <!-- title of the card with 1rem margin bottom, light text and only visible for screen-width >= 768px -->
+            <div class="mb-3"> <!-- element with 1rem margin bottom -->
+              <label for="csvFile" class="form-label text-secondary small-text text-uppercase">Select CSV</label> <!-- styled label for the CSV file picker button with a lighter text color, smaller text size and uppercase text-->
+              <input class="form-control bg-transparent text-light" type="file" id="csvFile" accept=".csv" autocomplete="off"/> <!-- styled file picker button with a transparent background and light text -->
+            </div>
+            <div class="mb-3 d-flex justify-content-between align-items-center"> <!-- element with 1rem margin bottom which is a flexbox which pushes the two items inside apart and vertically centers the items -->
+              <a id="btnHelp" class="btn btn-sm btn-outline-info" href="https://github.com/NerdTech-aut/cmcdv" target="_blank">Help</a> <!-- link which is styled as a compact outlined info button -->
+              <span class="badge badge-pill text-bg-secondary py-2 small-text cursor-default"> <!-- points counter as a badge pill with gray secondary background, 0.5rem margin top and bottom and custom font size as well as a cursor type override to default -->
+                <span id="visibleCount">0</span> / <span id="totalCount">0</span> points
+              </span>
+            </div>
+            <div class="row g-2 mb-3"> <!-- row with a gutter between columns of 0.75rem and 1rem margin bottom -->
+              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                <label class="form-label text-secondary small-text text-uppercase">PLMN</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                <div class="dropdown"> <!-- styled dropdown -->
+                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterPlmnBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                    <span id="filterPlmnSelected">All</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterPlmnUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
+                    <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
+                      <input type="text" class="form-control form-control-sm border-secondary" id="filterPlmnSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                    </li>
+                    <li id="filterPlmnNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                  </ul>
+                </div>
+              </div>
+              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                <label class="form-label text-secondary small-text text-uppercase">Type</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                <div class="dropdown"> <!-- styled dropdown -->
+                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterTypeBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                    <span id="filterTypeSelected">All</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterTypeUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
+                    <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
+                      <input type="text" class="form-control form-control-sm border-secondary" id="filterTypeSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                    </li>
+                    <li id="filterTypeNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 mb-3"> <!-- row with a gutter between columns of 0.75rem and 1rem margin bottom -->
+              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                <label class="form-label text-secondary small-text text-uppercase">Band</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                <div class="dropdown"> <!-- styled dropdown -->
+                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterBandBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                    <span id="filterBandSelected">All</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterBandUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
+                    <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
+                      <input type="text" class="form-control form-control-sm border-secondary" id="filterBandSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                    </li>
+                    <li id="filterBandNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                  </ul>
+                </div>
+              </div>
+              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                <label class="form-label text-secondary small-text text-uppercase">ARFCN</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                <div class="dropdown"> <!-- styled dropdown -->
+                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterArfcnBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                    <span id="filterArfcnSelected">All</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterArfcnUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
+                    <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
+                      <input type="text" class="form-control form-control-sm border-secondary" id="filterArfcnSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                    </li>                      
+                    <li id="filterArfcnNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 mb-3"> <!-- row with a gutter between columns of 0.75rem and 1rem margin bottom -->
+              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                <label class="form-label text-secondary small-text text-uppercase" >NB</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                <div class="dropdown"> <!-- styled dropdown -->
+                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterNbBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                    <span id="filterNbSelected">All</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterNbUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
+                    <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
+                      <input type="text" class="form-control form-control-sm border-secondary" id="filterNbSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                    </li>
+                    <li id="filterNbNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                  </ul>
+                </div>
+              </div>
+              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                <label class="form-label text-secondary small-text text-uppercase">Cell</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                <div class="dropdown"> <!-- styled dropdown -->
+                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterCellBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                    <span id="filterCellSelected">All</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterCellUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
+                    <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
+                      <input type="text" class="form-control form-control-sm border-secondary" id="filterCellSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                    </li>
+                    <li id="filterCellNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 d-flex justify-content-between align-items-center"> <!-- element with 1rem margin bottom which is a flexbox which pushes the two items inside apart and vertically centers the items -->
+              <button id="btnClearFilters" class="btn btn-sm btn-outline-danger">  <!-- button which is styled as a compact outlined danger button -->
+                Clear filters
+              </button>
+              <button id="btnSaveMap" class="btn btn-sm btn-success"> <!-- button which is styled as a compact success button -->
+                Save map
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-7 col-xl-8 col-xxl-9 d-flex flex-grow-1" data-bs-theme="light"> <!-- element either spanning all 12/12 columns on screen-width < 768px, spanning 7/12 columns on screen-width >= 768px, spanning 8/12 columns on screen-width >= 1200 and spanning 9/12 columns on screen-width >= 1400px and flexible & fills the remaining screen height -->
+        <div id="map" class="rounded-4 shadow-none z-0 d-flex flex-grow-1"></div> <!-- map with 1rem border radius, no shadow, z-index of 0 and flexible & fills the remaining screen height -->
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="emptyMapModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <!-- model to show when user wants to save an empty map which can fade in & out and needs to be acknowledged through a static backdrop-->
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title  cursor-default" id="staticBackdropLabel">Map save</h1>
+        </div>
+        <div class="modal-body">
+          <p>No visible points to save on the map.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="successfulMapModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <!-- model to show when user wants to save map with points on browsers that don't support save file dialog which can fade in & out and needs to be acknowledged through a static backdrop-->
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 cursor-default" id="staticBackdropLabel">Map save</h1>
+        </div>
+        <div class="modal-body cursor-default">
+          <p id="successfulMapModelText"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn btn-success" id="downloadButton">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-secondary text-center py-2 border-top border-secondary"> <!-- footer with a dark background, gray & centered text, padding top and bottom of 0.5rem and a border top with a light color -->
+    <small>2026 NerdTech @ <a class="text-decoration-none" href="https://www.lteforum.at/user/nerdtech.4949/">LTEForum.at</a></small>
+  </footer>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+  </script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js">
+  </script>
+
+  <script>
+    let eutraBands = [];
+    let nrBands = [];
+    let nrBandsSupport = [];
+    let mapTemplate = "";
+
+    loadData("https://cdn.jsdelivr.net/gh/NerdTech-aut/arfcn-to-frequency-files@refs/heads/main/EUTRA_operating_bands_frequencies_arfcn-numbers.json")
+      .then(data => { eutraBands = data || []; })
+      .catch(console.error);
+
+    loadData("https://cdn.jsdelivr.net/gh/NerdTech-aut/arfcn-to-frequency-files@refs/heads/main/NR_operating_bands_frequencies_duplex-types_arfcn-numbers.json")
+      .then(data => { nrBands = data || []; })
+      .catch(console.error);
+
+    loadData("https://cdn.jsdelivr.net/gh/NerdTech-aut/arfcn-to-frequency-files@refs/heads/main/NR-ARFCN_parameters_for_the_global_frequency_raster.json")
+      .then(data => { nrBandsSupport = data || []; })
+      .catch(console.error);
+
+    loadData("./assets/resources/map-template.html", 'text')
+      .then(data => { mapTemplate = data || ""; })
+      .catch(console.error);
+
+    let map;
+    let markerLayer = L.layerGroup();
+
+    let allPoints = [];
+    let filtered = []
+    let markers = [];
+    let latLngs = [];
+
+    let currentFilters = {
+      plmn: "",
+      type: "",
+      band: "",
+      arfcn: "",
+      nb: "",
+      cell: ""
+    };
+
+    let lastIsDesktop = window.innerWidth >= 768;
+    let fileName = "No file selected";
+
+    function initMap() {
+      map = L.map("map",{zoomControl: false}).setView([47.6965, 13.3457], 7);
+
+      const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+      {
+          minZoom: 7,
+          maxZoom: 21,
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', 
+      {
+          minZoom: 7,
+          maxZoom: 21,
+          attribution: '© <a href="https://www.esri.com/en-us/home">Esri</a>, <a href="https://www.earthstar.com/">Earthstar Geographics</a>, <a href="https://www.maxar.com/">Maxar</a>, <a href="https://www.usda.gov/">USDA</a>, <a href="https://www.usgs.gov/">USGS</a>, <a href="https://www.aex.com/">AEX</a>, <a href="https://www.getmapping.com/">Getmapping</a>, <a href="https://www.aerogrid.com/">Aerogrid</a>, <a href="https://www.ign.fr/">IGN</a>, <a href="https://www.igp.pt/">IGP</a>, and the <a href="https://www.gisusercommunity.com/">GIS User Community</a>'
+      });
+
+      const baseMaps = {
+          "OpenStreetMap": osm,
+          "Esri Satellite": satellite
+      };
+      L.control.layers(baseMaps).addTo(map);
+
+      markerLayer.addTo(map);
+
+      getLocation();
+    }
+
+    function setUserLocation(position)
+    {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      console.log("User location: " + lat + ", " + lon);
+      
+      map.setView([lat, lon], 7);
+    }
+
+    function handleLocationError(error) 
+    {
+      console.log("Error getting location: " + error.message);
+    }
+
+    function getLocation() 
+    {
+      if (navigator.geolocation)
+      {
+        navigator.geolocation.getCurrentPosition(setUserLocation, handleLocationError, {timeout: 1000});
+      } 
+      else 
+      {
+        console.log("Geolocation is not supported by this browser.");
+      }
+    }
+
+    //function to load external data
+    async function loadData(url, returnType = 'json') {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('HTTP error ' + response.status);
+      }
+      const data = returnType === 'json' ? await response.json() : await response.text();
+      return data;
+    }
+
+    function parseCsv(text) {
+      const headers = ['Latitude', 'Longitude', 'Altitude', 'MCC', 'MNC', 'LAC', 'Cell', 'Signal', 'Type', 'Subtype', 'ARFCN', 'PCI'];
+      const mapping = { 'LTE-LTE': 256, 'NR-SA': 16384 };
+      const invalidValues = ["-1", "0", "1", ""];
+      const rows = [];
+      
+      //split the text at newline and filter empty entries
+      const lines = text.split("\n").filter(l => l.trim().length > 0);
+      console.log(`${lines.length} rows in CSV`)
+
+      //iterate over all the lines
+      lines.forEach(line => {
+        //split the line at the separator
+        const cols = line.split(",");
+        //when the line does not have the expected amount of columns skip the rest of the run
+        if (cols.length !== headers.length) return;
+
+        //construct the row as a dictionary/json
+        const row = {};
+
+        //iterate over the headers and set a new key value pair for the current header and the column value at the current header index
+        headers.forEach((h, idx) => {
+          row[h] = cols[idx]
+        });
+
+        //update the Latitude row by converting it into a float
+        row.Latitude = parseFloat(row.Latitude)
+        //update the Longitude row by converting it into a float
+        row.Longitude = parseFloat(row.Longitude)
+        //when the latitude or longitude value is not a number then skip the rest of the run
+        if (isNaN(row.Latitude) || isNaN(row.Longitude)) return;
+
+        //create new PLMN entry based von MCC and MNC when these values are not invalid
+        row.PLMN = (!invalidValues.includes(row.MCC) || !invalidValues.includes(row.MNC)) ? `${row.MCC}-${row.MNC}` : "Unknown";
+        
+        //create new TypeSubtype entry based in Type and Subtype when these values are not invalid
+        row.TypeSubtype = (!invalidValues.includes(row.Type) || !invalidValues.includes(row.Subtype)) ? `${row.Type}-${row.Subtype}` : "Unknown";
+        //skip the rest of the run if type is not LTE or NR
+        if (row.TypeSubtype.includes(["LTE", "NR"])) return;
+        
+        //update LAC entry if value is invalid
+        row.LAC = (!invalidValues.includes(row.LAC)) ? row.LAC : "Unknown";
+        //update Cell entry if value is invalid
+        row.Cell = (!invalidValues.includes(row.Cell)) ? row.Cell : "Unknown";
+
+        //get the divisor for the calculation of the NB based on TypeSubtype
+        const divisor = mapping[row.TypeSubtype] ?? 1;
+        //create a new NB entry by first convert and check if the Cell-ID is a finite number and then calculate the NB by converting the Cell-ID to a number, divide it by the divisor, and turning it into a while number
+        row.NB = Number.isFinite(Number(row.Cell)) ? String(Math.trunc(Number(row.Cell) / divisor)) : "Unknown";
+
+        //create a new Band entry with the getBandNumber function
+        row.Band = getBandNumber(row.ARFCN, row.Type);
+        //create a new Frequency entry with the calculateFrequency function 
+        row.Frequency = calculateFrequency(row.ARFCN, row.Type);
+        //create a new Color entry with the determineMarkerColor function
+        row.Color = determineMarkerColor(row.Signal);
+
+        //add the finished row dict/json to the rows list
+        rows.push(row);
+      });
+
+      console.log(`Parsed ${rows.length} rows from CSV`);
+      return rows;
+    }
+
+    function getBandNumber(arfcn, type) {
+      //parse the ARFCN to an int
+      const arfcnInt = parseInt(arfcn);
+      //band selection when type is LTE and ARFCN is not NaN
+      if (type.includes('LTE') && !isNaN(arfcnInt)) {
+        //check whether eutraBands is not an empty array
+        if (Array.isArray(eutraBands) && eutraBands.length) {
+          let matchingBands = [];
+          //iterate over the eutraBands list
+          eutraBands.forEach(eutraBand => {
+            //when the ARFCN is in the range between dl_arfcn_low and dl_arfcn_high
+            if (arfcnInt >= eutraBand.dl_arfcn_low && arfcnInt <= eutraBand.dl_arfcn_high) {
+              //when in range add the current band to the list
+              matchingBands.push(eutraBand.eutra_operating_band);
+            }
+          });
+          //return all bands as a string by joining all matching entries together
+          return `${matchingBands.join("/")}`;
+        }
+        return "LTE Band ?";
+      //band selection when type is NR and ARFCN is not NaN
+      } else if (type.includes('NR') && !isNaN(arfcnInt)) {
+        //check whether nrBands is not an empty array
+        if (Array.isArray(nrBands) && nrBands.length) {
+          let matchingBands = [];
+          //iterate over the nrBand list
+          nrBands.forEach (nrBand => {
+            //when the ARFCN is in the range between dl_arfcn_low and dl_arfcn_high
+            if (arfcnInt >= nrBand.dl_arfcn_low && arfcnInt <= nrBand.dl_arfcn_high) {
+              //when in range add the current band to the list
+              matchingBands.push(nrBand.nr_operating_band);
+            }
+          });
+          //return all bands as a string by joining all matching entries together
+          return `${matchingBands.join("/")}`;
+        }
+        return "NR Band ?";
+      }
+      return "Unknown Band";
+    }
+
+    function calculateFrequency(arfcn, type) {
+      //convert ARFCN to an integer
+      const arfcnInt = parseInt(arfcn);
+      //frequency calculation when type is LTE and ARFCN is not NaN
+      if (type.includes('LTE') && !isNaN(arfcnInt)) {
+        //check whether eutraBands is not an empty array
+        if (Array.isArray(eutraBands) && eutraBands.length) {
+          let matchingEutraBand = {};
+          //iterate over the eutraBands list
+          eutraBands.forEach(eutraBand => {
+            //when the ARFCN is in the range between dl_arfcn_low and dl_arfcn_high
+            if (arfcnInt >= eutraBand.dl_arfcn_low && arfcnInt <= eutraBand.dl_arfcn_high) {
+              //set the matching eutraBand item
+              matchingEutraBand = eutraBand;
+              return;
+            }
+          });
+          //calculate the frequency with the formular FDL = FDL_low + 0.1 * (NDL - N_offs_UL)
+          return new String(parseInt(matchingEutraBand.dl_freq_low_mHz) + 0.1 * (arfcnInt - parseInt(matchingEutraBand.n_offs_dl)));
+        }
+        return "LTE Band ?";
+      //frequency calculation when type is NR and ARFCN is not NaN
+      } else if (type.includes('NR') && !isNaN(arfcnInt)) {
+        //check whether nrBandsSupport is not an empty array
+        if (Array.isArray(nrBandsSupport) && nrBandsSupport.length) {
+          let matchingNrBandSupport = {};
+          //iterate over the nrBandsSupport list
+          nrBandsSupport.forEach(nrBandSupport => {
+            //when the ARFCN is in the range between n_ref_low and n_ref_high
+            if (arfcnInt >= nrBandSupport.n_ref_low && arfcnInt <= nrBandSupport.n_ref_high) {
+              //set the matching nrBandSupport
+              matchingNrBandSupport = nrBandSupport;
+              return;
+            }
+          });
+          //calculate the frequency with the formular FDL = F_ref_offs + delta-freq_Global * (N_REF - N_REF-Offs)
+          return new String(parseInt(matchingNrBandSupport.freq_ref_offs_mHz) + (parseInt(matchingNrBandSupport.delta_freq_global_kHz) / 1000) * (arfcnInt - parseInt(matchingNrBandSupport["n_ref-offs"])));
+        }
+        return "NR Band ?";
+      }
+      return "Unknown Band";
+    }
+
+    function determineMarkerColor(signal) {
+      if (signal >= -85) {
+        return "#008000";
+      } else if (signal >= -100) {
+        return "#90EE90";
+      } else if (signal >= -115) {
+        return "#FFCCCB";
+      } else {
+        return "#FF0000";
+      }
+    }
+
+    function updateFilterOptions() {
+      //Sets are used because they are like lists but have the advantage that duplicates are ignored
+      
+      filtered = allPoints
+      const plmnSet = new Set();
+      const typeSet = new Set();
+      const bandSet = new Set();
+      const arfcnSet = new Set();
+      const nbSet = new Set();
+      const cellSet = new Set();
+
+      //always add all unique PLMNs
+      //iterate over all of the points
+      filtered.forEach(p => {
+        //add the current PLMN to plmnSet
+        plmnSet.add(p.PLMN);
+      });
+
+      //create a subset of filtered by applying a filter which only keeps a point of there is no PLMN filter selected or the selected PLMN filter matches the PLMN value of the current point
+      filtered = filtered.filter(p => !currentFilters.plmn || currentFilters.plmn === p.PLMN);
+      //iterate over all remaining points after plmn filtering
+      filtered.forEach(p => {
+        //add the current TypeSubtype to typeSet
+        typeSet.add(p.TypeSubtype);
+      });
+
+      //create a subset of filtered by applying a filter which only keeps a point of there is no type filter selected or the selected type filter matches the type value of the current point
+      filtered = filtered.filter(p => !currentFilters.type || currentFilters.type === p.TypeSubtype);
+      //iterate over all remaining points after type filtering
+      filtered.forEach(p => {
+        //add the current band to bandSet
+        bandSet.add(p.Band);
+      });
+
+      //create a subset of filtered by applying a filter which only keeps a point of there is no band filter selected or the selected band filter matches the band value of the current point
+      filtered = filtered.filter(p => !currentFilters.band || currentFilters.band === p.Band);
+      //iterate over all remaining points after band filtering
+      filtered.forEach(p => {
+        //add the current ARFCN to arfcnSet
+        arfcnSet.add(p.ARFCN);
+      });
+
+      //create a subset of filtered by applying a filter which only keeps a point of there is no ARFCN filter selected or the selected ARFCN filter matches the ARFCN value of the current point
+      filtered = filtered.filter(p => !currentFilters.arfcn || currentFilters.arfcn === p.ARFCN);
+      //iterate over all remaining points after ARFCN filtering
+      filtered.forEach(p => {
+        //add the current NB to nbSet
+        nbSet.add(p.NB);
+      });
+
+      //create a subset of filtered by applying a filter which only keeps a point of there is no NB filter selected or the selected NB filter matches the NB value of the current point
+      filtered = filtered.filter(p => !currentFilters.nb || currentFilters.nb === p.NB);
+      //iterate over all remaining points after NB filtering
+      filtered.forEach(p => {
+        //add the current Cell to cellSet
+        cellSet.add(p.Cell);
+      });
+
+      filtered = filtered.filter(p => !currentFilters.cell || currentFilters.cell === p.Cell);
+
+      renderDropdown('filterPlmn', plmnSet);
+      renderDropdown('filterType', typeSet);
+      renderDropdown('filterBand', bandSet);
+      renderDropdown('filterArfcn', arfcnSet);
+      renderDropdown('filterNb', nbSet);
+      renderDropdown('filterCell', cellSet);
+    }
+
+    function renderDropdown(idBase, set) {
+      const ul = document.getElementById(idBase + "UL");
+      const search = document.getElementById(idBase + "Search");
+      const selectedSpan = document.getElementById(idBase + "Selected");
+      const noResults = document.getElementById(idBase + "NoResults");
+      const btn = document.getElementById(idBase + "Btn");
+
+      //with a.dropdown-item[data-value] search and NoResults are excluded from the query 
+      ul.querySelectorAll('li a.dropdown-item[data-value]').forEach(a => {
+        if (a.dataset.value !== "") a.parentElement.remove();
+      });
+
+      //create a sorted array based on the current set
+      const sortedFilters = Array.from(set).sort((a,b) => {
+        const an = Number(a)
+        const bn = Number(b);
+        //when both values are numbers calculate the difference between the two values 
+        if (!Number.isNaN(an) && !Number.isNaN(bn)) return an - bn;
+        //when at least one value is not a number use string comparison
+        return a.localeCompare(b);
+      });
+
+      //get the all entry which is the first <li> with data-value=""
+      const allEntry = ul.querySelector('a.dropdown-item[data-value=""]');
+      //get the no result entry
+      const noResultEntry = allEntry.parentElement.nextSibling;
+      
+      //iterate over the sortedFilters list
+      sortedFilters.forEach(sortedFilter => {
+        //create a new list element
+        const li = document.createElement('li');
+        //create a new link element 
+        const a = document.createElement('a');
+        //configure the dropdown-item class for the new link element 
+        a.className = 'dropdown-item';
+        a.href = '#';
+        a.classList.add("d-block")
+        //configure value and text for the link element
+        a.dataset.value = sortedFilter;
+        a.textContent = sortedFilter;
+        //add the link element to the list element
+        li.appendChild(a);
+        //add the list element to the list before the no result entry
+        ul.insertBefore(li, noResultEntry);
+      });
+
+      //iterate over the just created list elements
+      ul.querySelectorAll('a.dropdown-item').forEach(a => {
+        //create a custom event handler for the current link element
+        a._customClickHandler = function(e) {
+          //prevent navigation to the link 
+          e.preventDefault();
+
+          //get the value from the selected link element
+          const val = this.dataset.value;
+          //save the base id in the click handler
+          const key = idBase.replace('filter','');
+          //reset the filter variables and the dropdown box text depending on the key
+          if (key === 'Plmn') {
+            currentFilters.plmn = val;
+            currentFilters.type = "";
+            currentFilters.band = "";
+            currentFilters.arfcn = "";
+            currentFilters.nb = "";
+            currentFilters.cell = "";
+            document.getElementById('filterTypeSelected').textContent = 'All';
+            document.getElementById('filterBandSelected').textContent = 'All';
+            document.getElementById('filterArfcnSelected').textContent = 'All';
+            document.getElementById('filterNbSelected').textContent = 'All';
+            document.getElementById('filterCellSelected').textContent = 'All';
+          } else if (key === 'Type') {
+            currentFilters.type = val;
+            currentFilters.band = "";
+            currentFilters.arfcn = "";
+            currentFilters.nb = "";
+            currentFilters.cell = "";
+            document.getElementById('filterBandSelected').textContent = 'All';
+            document.getElementById('filterArfcnSelected').textContent = 'All';
+            document.getElementById('filterNbSelected').textContent = 'All';
+            document.getElementById('filterCellSelected').textContent = 'All';
+          } else if (key === 'Band') {
+            currentFilters.band = val;
+            currentFilters.arfcn = "";
+            currentFilters.nb = "";
+            currentFilters.cell = "";
+            document.getElementById('filterArfcnSelected').textContent = 'All';
+            document.getElementById('filterNbSelected').textContent = 'All';
+            document.getElementById('filterCellSelected').textContent = 'All';
+          } else if (key === 'Arfcn') {
+            currentFilters.arfcn = val;
+            currentFilters.nb = "";
+            currentFilters.cell = "";
+            document.getElementById('filterNbSelected').textContent = 'All';
+            document.getElementById('filterCellSelected').textContent = 'All';
+          } else if (key === 'Nb') {
+            currentFilters.nb = val;
+            currentFilters.cell = "";
+            document.getElementById('filterCellSelected').textContent = 'All';
+          } else if (key === 'Cell') {
+            currentFilters.cell = val;
+          }
+
+          //update dropdown box text or reset it to all when the all element was selected
+          selectedSpan.textContent = val ? val : 'All';
+          //update the no results item to not visible when the all item was selected
+          if (!val) noResults.classList.replace('d-block', 'd-none');
+
+          updateFilterOptions();
+          applyFilters();
+        };
+        //register the event handler
+        a.addEventListener('click', a._customClickHandler);
+      });
+
+      //clear the search box
+      search.value = '';
+      //set the no results item to invisible
+      noResults.classList.replace('d-block', 'd-none');
+      //remove the existing event listener
+      search.removeEventListener('input', search._customSearchHandler);
+      //create a custom search handler for the current search box
+      search._customSearchHandler = function() {
+        //get the current search value without starting or ending spaces in lower case
+        const q = this.value.trim().toLowerCase();
+        let hasResults = false;
+        //iterate over all list elements of the dropdown
+        ul.querySelectorAll('a.dropdown-item').forEach(a => {
+          //always keep the app entry visible
+          if (a.dataset.value === "") {
+            //skip the rest of the run
+            return;
+          }
+          //get the value of the current dropdown list element in lower case
+          const txt = a.textContent.toLowerCase();
+          //check whether the value of the current dropdown list element includes the search value
+          if (txt.includes(q)) {
+            //set matching dropdown list elements to visible
+            a.classList.replace('d-none', 'd-block');
+            hasResults = true;
+          } else {
+            //set not matching dropdown list elements to invisible
+            a.classList.replace('d-block', 'd-none');
+          }
+        });
+        //when there are no results set the no results item to visible
+        if (hasResults) {
+          noResults.classList.replace('d-block', 'd-none')
+        } else {
+          noResults.classList.replace('d-none', 'd-block')
+        }
+      };
+      //register the event handler
+      search.addEventListener('input', search._customSearchHandler);
+      //to prevent closing the dropdown when clicking search box
+      search.addEventListener('click', e => e.stopPropagation());
+
+      //remove the existing event listener from the dropdown button
+      btn.removeEventListener('shown.bs.dropdown', btn._customShownHandler);
+      //create a custom event handler to focus the search input when the dropdown is opened
+      btn._customShownHandler = function() {
+        //delay the focusing by 10ms to ensure that he dropdown is open
+        setTimeout(() => {
+          try {
+            //focus on the search box
+            search.focus();
+            //select the text in the search box if the select function exists
+            if (typeof search.select === 'function') search.select();
+          } catch (err) {
+            //ignore focus errors
+          }
+        }, 10);
+      };
+      //register the event listener
+      btn.addEventListener('shown.bs.dropdown', btn._customShownHandler);
+
+      //to prevent closing the dropdown when clicking on the no results item
+      noResults.addEventListener('click', e => e.stopPropagation());
+    }
+
+    function applyFilters() {
+      //reset the marker layer, the marker list an the coordinates list
+      markerLayer.clearLayers();
+      markers = [];
+      latLngs = [];
+
+      //iterate over the filtered elements
+      filtered.forEach(p => {
+        //create the circle marker options for the current point with the design
+        //fill color is dynamic based on signal strength
+        const circleMarkerOptions = {
+          radius: 6,
+          color: "#2c2f3a",
+          weight: 1,
+          fillColor: p.Color,
+          fillOpacity: 1
+        }
+
+        //create the circle marker for the current point based on latitude, longitude and the circle marker options
+        const marker = L.circleMarker([p.Latitude, p.Longitude], circleMarkerOptions);
+
+        //create the popup html code
+        let popupHtml = 
+        `<table class="table table-sm table-striped">
+          <tr>
+            <th scope="row">PLMN</th>      <td>${p.PLMN}</td>
+          </tr>
+          <tr>
+            <th scope="row">LAC ID</th>    <td>${p.LAC}</td>
+          </tr>
+          <tr>
+            <th scope="row">NB ID</th>     <td>${p.NB}</td>
+          </tr>
+          <tr>
+            <th scope="row">Cell ID</th>   <td>${p.Cell}</td>
+          </tr>
+          <tr>
+            <th scope="row">PCI</th>       <td>${p.PCI}</td>
+          </tr>
+          <tr>
+            <th scope="row">Frequency</th> <td>${p.Frequency} MHz</td>
+          </tr>
+          <tr>
+            <th scope="row">ARFCN</th>     <td>${p.ARFCN}</td>
+          </tr>
+          <tr>
+            <th scope="row">Band</th>      <td>${p.Band}</td>
+          </tr>
+          <tr>
+            <th scope="row">Type</th>      <td>${p.TypeSubtype}</td>
+          </tr>
+          <tr>
+            <th scope="row">Signal</th>    <td>${p.Signal} dBm</td>
+          </tr>
+          <tr>
+            <th scope="row">Altitude</th>  <td>${p.Altitude} meters</td>
+          </tr>
+          <tr>
+            <th scope="row">Latitude</th>  <td>${p.Latitude}</td>
+          </tr>
+          <tr>
+            <th scope="row">Longitude</th> <td>${p.Longitude}</td>
+          </tr>
+          <tr>
+            <th colspan="2"><a href="https://www.google.com/maps/search/${p.Latitude},+${p.Longitude}" target="_blank">View on Google Maps</a></th>
+          </tr>
+          <tr>
+            <th colspan="2"><a href="https://www.openstreetmap.org/#map=19/${p.Latitude}/${p.Longitude}" target="_blank">View on OpenStreetMap</a></th>
+          </tr>
+          <tr>
+            <th colspan="2"><a href="https://www.cellmapper.net/map?MCC=${p.MCC}&MNC=${p.MNC}&type=${p.Type}&latitude=${p.Latitude}&longitude=${p.Longitude}&zoom=15.3" target="_blank">View on CellMapper</a></th>
+          </tr>
+        </table>`;
+
+        //create the tooltip text for the current item
+        const toolTipText = `PLMN: ${p.PLMN} <br> Type: ${p.TypeSubtype} <br> NB ID: ${p.NB} <br> Cell ID: ${p.Cell} <br> Frequency: ${p.Frequency} MHz <br> Signal: ${p.Signal} dBm`;
+        //bind the tooltip to the marker
+        marker.bindTooltip(toolTipText, {permanent: false, direction: 'top', offset: [0, -8], opacity: 1});
+        //bind the popup to the marker
+        marker.bindPopup(popupHtml);
+        //add the marker to the marker layer
+        marker.addTo(markerLayer);
+        //add the raw information about the marker to the markers list
+        markers.push({ Latitude: p.Latitude, Longitude: p.Longitude, Icon: circleMarkerOptions, PopUp: popupHtml, ToolTip: toolTipText });
+        //add the latitude and longitude to the coordinates list
+        latLngs.push([p.Latitude, p.Longitude]);
+      });
+
+      //after the filtered points were added as markers
+      //update the counter for the visible points
+      document.getElementById("visibleCount").textContent = filtered.length;
+
+      //check if one or more markers was added to the map
+      if (latLngs.length > 0) {
+        //create a bounds object based on the coordinated of all markers
+        const bounds = L.latLngBounds(latLngs);
+        //set the bounds
+        map.fitBounds(bounds.pad(0.2), { maxZoom: 19 });
+      }
+    }
+
+    document.getElementById('btnSaveMap').addEventListener('click', async event => {
+      try {
+        //check if there are markers to save
+        if (markers.length === 0) {
+          const emptyMapModel = new bootstrap.Modal(document.getElementById('emptyMapModel'));
+          emptyMapModel.show();
+          //skip the rest of the function when there are no markers on the map to save
+          return;
+        }
+        
+        //create the filename suggestion by replacing the .csv extension with .html and a hint that it is a map
+        const suggestedFileName = fileName.replace('.csv', `${Object.entries(currentFilters).map(([k, v]) => (`${v ? '_' + v : ''}`)).join('')}_map.html`);
+        //create the content for the file by replacing the placeholders in the template file with json stringified versions of the markers and latLngs lists
+        const content = mapTemplate.replace("filteredDataJSON = []", `filteredDataJSON = ${JSON.stringify(markers)}`).replace("latLngs = []", `latLngs = ${JSON.stringify(latLngs)}`);
+
+        //check whether the current browser has save file picker support
+        if (typeof window.showSaveFilePicker === 'function') {
+          //create a save file picker with the suggested filename & filetype html and get the resulting FileSystemFileHandle
+          const handle = await window.showSaveFilePicker({
+            suggestedName: suggestedFileName,
+            types: [{
+              description: 'HTML Files',
+              accept: { 'text/html': ['.html'] },
+            }],
+          });
+
+          //create a FileSystemWritableFileStream to write the file based on the FileSystemFileHandle 
+          const writable = await handle.createWritable();
+          //write the file
+          await writable.write(content);
+          //close the writer
+          await writable.close();
+        //when there is no save file picker support
+        } else {
+          const successfulMapModelText = document.getElementById('successfulMapModelText')
+          successfulMapModelText.innerText = `Do you want to download the file ${suggestedFileName} with ${markers.length} points?`
+
+          const successfulMapModel = new bootstrap.Modal(document.getElementById('successfulMapModel'));
+          successfulMapModel.show();
+
+          const downloadButton = document.getElementById('downloadButton');
+          downloadButton.removeEventListener('input', downloadButton._customDownloadHandler);
+          downloadButton._customDownloadHandler = function(e) {
+            successfulMapModel.hide()
+            //create a file blob with the file content and setting the file type
+            const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+            //creation of a blob url based on the file blob
+            const url = URL.createObjectURL(blob);
+            //create a new invisible link element with the blob url and the suggested filename
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = suggestedFileName;
+
+            //add the invisible link element to the DOM
+            document.body.appendChild(a);
+            //programmatically click on the invisible link element
+            a.click();
+            //after 100ms remove the hidden link element from the DOM and revoke the blob url
+            setTimeout(() => {
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            }, 100);
+          }
+          downloadButton.addEventListener('click', downloadButton._customDownloadHandler);
+        }
+      } catch (err) {
+        console.error('Save cancelled or failed:', err);
+      }
+    });
+
+    //csv uploader function
+    document.getElementById("csvFile").addEventListener("change", event => {
+      //get the new file
+      const file = event.target.files[0];
+      //when the new file is empty but there was another file selected previously
+      if (file == null && fileName != "No file selected") {
+        //recreate the previously selected file
+        const previousFile = new File(allPoints, fileName, {
+          type: 'text/csv',
+          lastModified: Date.now(),
+        });
+        //create a new data transfer and add the recreated previous File
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(previousFile);
+        //assign the files in the dataTransfer object to the file-input element which overrides that there is no file selected
+        document.getElementById('csvFile').files = dataTransfer.files;
+      }
+      //get the filename but if now no file was selected and there was previously a file keep the filename of the previously selected file
+      fileName = (file != null) ? file.name : (fileName != "No file selected" ? fileName : "No file selected");
+      console.log(`Selected file: ${fileName}`);
+      //skip the rest of the function when no new file was selected
+      if (!file) return;
+
+      const reader = new FileReader();
+      //create custom function on how the reading of the file is done
+      reader.onload = e => {
+        //get the result from the reading and use custom parseCsv function to parse the file then save the result in the allPoints variable
+        allPoints = parseCsv(e.target.result);
+        
+        //update the total points counter
+        document.getElementById("totalCount").textContent = allPoints.length;
+
+        resetDropdowns();
+        updateFilterOptions();
+        applyFilters();
+
+        //automatically hide the data and filters section on mobile after the file selection
+        //check if which is small enough
+        if (window.innerWidth < 768) {
+          //collapse the card body programmatically
+          bootstrap.Collapse.getOrCreateInstance(document.getElementById('filtersCardBody')).hide();
+          lastIsDesktop = false;
+        }
+      };
+      //read the file
+      reader.readAsText(file);
+    });
+
+    //function to clear all filters on button click
+    document.getElementById("btnClearFilters").addEventListener("click", () => {
+      resetDropdowns();
+      updateFilterOptions();
+      applyFilters();
+    });
+
+    function resetDropdowns () {
+      //reset the filters variable
+      currentFilters = { plmn: "", type: "", band: "", arfcn: "", nb: "", cell: "" };
+
+      //iterate over all filters
+      ['Plmn','Type','Band','Arfcn','Nb','Cell'].forEach(k => {
+        //set the text of the dropdown box back to all
+        document.getElementById('filter' + k + 'Selected').textContent = 'All';
+        //empty the search box text - necessary because if there is text in the search box with no match this clears the the no matches found item from the list 
+        document.getElementById('filter' + k + 'Search').value = '';
+        //iterate over the dropdown items
+        //with a.dropdown-item[data-value] search and NoResults are excluded from the query 
+        document.getElementById('filter' + k + 'UL').querySelectorAll('li a.dropdown-item[data-value]').forEach(a => {
+          //only remove a dropdown item if it isn't the All item
+          if (a.dataset.value !== "") a.parentElement.remove();
+        });
+      });
+    }
+
+    document.getElementById("mobileHeader").addEventListener('click', () => {
+      const mobileHeader = document.getElementById("mobileHeader")
+      const collapseIcon = document.getElementById("collapseIcon")
+      //when the mobile card body is now visible 
+      if (mobileHeader.getAttribute('aria-expanded') == "true") {
+        //indicate that the card is now expanded with the down arrow
+        collapseIcon.classList.replace('bi-chevron-up', 'bi-chevron-down')
+        //show the border of the mobile card header
+        mobileHeader.classList.remove('border-bottom-0')
+        //bottom edge of the mobile card header should be straight
+        mobileHeader.classList.remove('rounded-bottom-4')
+      //when the mobile card body is now invisible 
+      } else {
+        //indicate that the card is now collapsed with the up arrow
+        collapseIcon.classList.replace('bi-chevron-down', 'bi-chevron-up')
+        //hide the border of the mobile card header
+        mobileHeader.classList.add('border-bottom-0')
+        //bottom edge of the mobile card header should be rounded
+        mobileHeader.classList.add('rounded-bottom-4')
+      }
+    });
+
+    //initialize the map once the DOM is ready
+    window.addEventListener("load", () => {
+      initMap();
+    });
+
+    //resizing event listener 
+    window.addEventListener("resize", () => {
+      //get the real size of the window
+      //this helps to prevent some erroneous size reports
+      rect = document.documentElement.getBoundingClientRect();
+      realSize = { width: rect.width, height: rect.height };
+      //create bool whether the width is 768px or above or not
+      const isDesktop = realSize.width >= 768;
+      //only execute if the current status does not match the last recorded status
+      //this is to prevent hiding the card body when resizing with width below 768px 
+      if (isDesktop !== lastIsDesktop) {
+        //update the previous status variable
+        lastIsDesktop = isDesktop;
+        //get the card body element
+        const cardBody = document.getElementById('filtersCardBody')
+        //when width is 768px or above
+        if (isDesktop) {
+          console.log(window.innerWidth)
+          //show the card body
+          cardBody.classList.add("show")
+        //when width is below 768px
+        } else {
+          //hide the card body
+          cardBody.classList.remove("show")
+          //update the mobile card header arrow
+          document.getElementById("collapseIcon").classList.replace('bi-chevron-down', 'bi-chevron-up')
+
+          //update bottom border and shape of the mobile card header
+          const mobileHeader = document.getElementById("mobileHeader")
+          mobileHeader.classList.add('border-bottom-0')
+          mobileHeader.classList.add('rounded-bottom-4')
+        }
+      }
+    });
+  </script>
+</body>
+</html>

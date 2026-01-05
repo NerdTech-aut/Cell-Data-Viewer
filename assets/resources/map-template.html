@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+
+<style>
+    html,body {
+        height: 100%; 
+        margin: 0px; 
+        padding: 0px; 
+    }
+
+    #map {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+</head>
+<body>
+    <div id="map"></div>
+</body>
+<script>
+    var filteredDataJSON = [];
+    var latLngs = [];
+    var map;
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+    {
+        minZoom: 7,
+        maxZoom: 21,
+        attribution: '© OpenStreetMap | CM CSV Data Viewer',
+    });
+    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', 
+    {
+        minZoom: 7,
+        maxZoom: 21,
+        attribution: '© Esri, Earthstar Geographics, Maxar, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, and the GIS User Community | CM CSV Data Viewer'
+    });
+    var baseMaps = 
+    {
+        "OpenStreetMap": osm,
+        "Esri Satellite": satellite
+    };
+
+    function createMap()
+    {
+        map = L.map('map', {
+            worldCopyJump: false, 
+            maxBounds: [[-85, -180], [85, 180]], 
+            maxBoundsViscosity: 1.0 
+        }).setView([47.6965, 13.3457], 7);
+        osm.addTo(map);
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+    }
+
+    function addDataToMap(dataJSON) {
+        var layers = {};
+        let markerLayer = L.layerGroup();
+
+        dataJSON.forEach(entry => {
+            let marker = L.circleMarker([entry.Latitude, entry.Longitude], entry.Icon);
+
+            marker.bindPopup(entry.PopUp);
+            marker.bindTooltip(entry.ToolTip, {permanent: false, direction: 'top', offset: [0, -8], opacity: 1});
+            marker.addTo(markerLayer);
+        });
+
+        markerLayer.addTo(map);
+        const bounds = L.latLngBounds(latLngs);
+        map.fitBounds(bounds.pad(0.2), { maxZoom: 19 });
+    }
+
+    createMap();
+    addDataToMap(filteredDataJSON);
+</script>
+</html>
