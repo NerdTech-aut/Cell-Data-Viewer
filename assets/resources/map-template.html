@@ -23,22 +23,26 @@
     <div id="map"></div>
 </body>
 <script>
-    var filteredDataJSON = [];
-    var latLngs = [];
-    var map;
-    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+    const filteredDataJSON = [];
+    const latLngs = [];
+
+    let map;
+
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
     {
         minZoom: 7,
         maxZoom: 21,
-        attribution: '© OpenStreetMap | CM CSV Data Viewer',
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     });
-    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', 
+
+    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', 
     {
         minZoom: 7,
         maxZoom: 21,
-        attribution: '© Esri, Earthstar Geographics, Maxar, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, and the GIS User Community | CM CSV Data Viewer'
+        attribution: '© <a href="https://www.esri.com/en-us/home">Esri</a>, <a href="https://www.earthstar.com/">Earthstar Geographics</a>, <a href="https://www.maxar.com/">Maxar</a>, <a href="https://www.usda.gov/">USDA</a>, <a href="https://www.usgs.gov/">USGS</a>, <a href="https://www.aex.com/">AEX</a>, <a href="https://www.getmapping.com/">Getmapping</a>, <a href="https://www.aerogrid.com/">Aerogrid</a>, <a href="https://www.ign.fr/">IGN</a>, <a href="https://www.igp.pt/">IGP</a>, and the <a href="https://www.gisusercommunity.com/">GIS User Community</a>'
     });
-    var baseMaps = 
+
+    const baseMaps = 
     {
         "OpenStreetMap": osm,
         "Esri Satellite": satellite
@@ -46,17 +50,13 @@
 
     function createMap()
     {
-        map = L.map('map', {
-            worldCopyJump: false, 
-            maxBounds: [[-85, -180], [85, 180]], 
-            maxBoundsViscosity: 1.0 
-        }).setView([47.6965, 13.3457], 7);
+        map = map = L.map("map",{zoomControl: false}).setView([47.6965, 13.3457], 7);
         osm.addTo(map);
+        L.control.layers(baseMaps).addTo(map);
         L.control.zoom({ position: 'bottomright' }).addTo(map);
     }
 
     function addDataToMap(dataJSON) {
-        var layers = {};
         let markerLayer = L.layerGroup();
 
         dataJSON.forEach(entry => {
