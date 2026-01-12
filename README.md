@@ -2,6 +2,8 @@
 ## About
 This web tool allows anyone to make more out of the CSV files collected by the CellMapper application.
 
+It is currently available at: [https://nerdtech-aut.github.io/cmcdv/cmcdv.html](https://nerdtech-aut.github.io/cmcdv/cmcdv.html)
+
 ![CM CSV Data Viewer main screenshot](/assets/documentation/imgs/Screenshot-Main.png)
 
 This web tool lets you view, filter and export the data points you have collected with the CellMapper application on your Android device.

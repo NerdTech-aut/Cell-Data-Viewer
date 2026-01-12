@@ -64,7 +64,7 @@
     }
   </style>
 </head>
-<body class="bg-primary-subtle d-flex flex-column" data-bs-theme="dark"> <!-- body with a dark blue background and a dark color theme as a flexible column-->
+<body class="bg-dark d-flex flex-column" data-bs-theme="dark"> <!-- body with a dark background and a dark color theme as a flexible column-->
   <nav class="navbar bg-dark border-bottom border-secondary"> <!-- styled navbar with a dark background and a border at the bottom with a light color -->
     <div class="container-fluid"> <!-- always full width container -->
       <div class="d-flex flex-column cursor-default"> <!-- flexible in vertical orientation with default cursor override -->
@@ -78,7 +78,7 @@
       </a>
     </div>
   </nav>
-  <div class="container-fluid d-flex flex-grow-1 py-3"> <!-- always full width flexible container which always fills the screen height with 1rem padding top & bottom -->
+  <div class="bg-primary-subtle container-fluid d-flex flex-grow-1 py-3"> <!-- with a dark blue background always full width flexible container which always fills the screen height with 1rem padding top & bottom -->
     <div class="row flex-grow-1 g-3"> <!-- row which always fills the screen height with a gutter between columns of 1.5rem -->
       <div class="col-12 col-md-5 col-xl-4 col-xxl-3"> <!-- element either spanning all 12/12 columns on screen-width < 768px, spanning 5/12 columns on screen-width >= 768px, spanning 4/12 columns on screen-width >= 1200 and spanning 3/12 columns on screen-width >= 1400px -->
         <div class="card h-100 rounded-4 border-secondary-subtle bg-secondary-subtle"> <!-- a card with 100% height in relation to the parent element, a 1rem rounded & subtle lighter border and darker background -->
@@ -105,7 +105,7 @@
                 <label class="form-label text-secondary small-text text-uppercase">PLMN</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
                 <div class="dropdown"> <!-- styled dropdown -->
                   <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterPlmnBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterPlmnSelected">All</span>
+                    <span id="filterPlmnSelected">All</span> <!-- default button text -->
                   </button>
                   <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterPlmnUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
                     <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
@@ -114,7 +114,7 @@
                     <li>
                       <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
                     </li>
-                    <li id="filterPlmnNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                    <li id="filterPlmnNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
                   </ul>
                 </div>
               </div>
@@ -122,7 +122,7 @@
                 <label class="form-label text-secondary small-text text-uppercase">Type</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
                 <div class="dropdown"> <!-- styled dropdown -->
                   <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterTypeBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterTypeSelected">All</span>
+                    <span id="filterTypeSelected">All</span> <!-- default button text -->
                   </button>
                   <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterTypeUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
                     <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
@@ -131,7 +131,7 @@
                     <li>
                       <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
                     </li>
-                    <li id="filterTypeNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                    <li id="filterTypeNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
                   </ul>
                 </div>
               </div>
@@ -141,7 +141,7 @@
                 <label class="form-label text-secondary small-text text-uppercase">Band</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
                 <div class="dropdown"> <!-- styled dropdown -->
                   <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterBandBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterBandSelected">All</span>
+                    <span id="filterBandSelected">All</span> <!-- default button text -->
                   </button>
                   <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterBandUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
                     <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
@@ -150,7 +150,7 @@
                     <li>
                       <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
                     </li>
-                    <li id="filterBandNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                    <li id="filterBandNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
                   </ul>
                 </div>
               </div>
@@ -158,7 +158,7 @@
                 <label class="form-label text-secondary small-text text-uppercase">ARFCN</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
                 <div class="dropdown"> <!-- styled dropdown -->
                   <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterArfcnBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterArfcnSelected">All</span>
+                    <span id="filterArfcnSelected">All</span> <!-- default button text -->
                   </button>
                   <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterArfcnUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
                     <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
@@ -167,7 +167,7 @@
                     <li>
                       <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
                     </li>                      
-                    <li id="filterArfcnNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                    <li id="filterArfcnNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
                   </ul>
                 </div>
               </div>
@@ -177,7 +177,7 @@
                 <label class="form-label text-secondary small-text text-uppercase" >NB</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
                 <div class="dropdown"> <!-- styled dropdown -->
                   <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterNbBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterNbSelected">All</span>
+                    <span id="filterNbSelected">All</span> <!-- default button text -->
                   </button>
                   <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterNbUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
                     <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
@@ -186,7 +186,7 @@
                     <li>
                       <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
                     </li>
-                    <li id="filterNbNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                    <li id="filterNbNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
                   </ul>
                 </div>
               </div>
@@ -194,7 +194,7 @@
                 <label class="form-label text-secondary small-text text-uppercase">Cell</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
                 <div class="dropdown"> <!-- styled dropdown -->
                   <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterCellBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterCellSelected">All</span>
+                    <span id="filterCellSelected">All</span> <!-- default button text -->
                   </button>
                   <ul class="dropdown-menu dropdown-menu-scrollable z-1 overflow-y-auto w-100 pt-0" id="filterCellUL"> <!-- dropdown menu with some custom configuration regarding max-height after which it turns into a scrollable list with a high z-index to be in-front of all map elements, it fills the full width of the parent element and has no padding top -->
                     <li class="p-2 sticky-top bg-body border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem, it stays visible at the top of the dropdown menu while other items scroll below, has a dark background to no see other elements below and a border at the bottom with a subtle style -->
@@ -203,7 +203,7 @@
                     <li>
                       <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
                     </li>
-                    <li id="filterCellNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- -->
+                    <li id="filterCellNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
                   </ul>
                 </div>
               </div>
@@ -379,8 +379,8 @@
 
     function parseCsv(text) {
       const headers = ['Latitude', 'Longitude', 'Altitude', 'MCC', 'MNC', 'LAC', 'Cell', 'Signal', 'Type', 'Subtype', 'ARFCN', 'PCI'];
-      const mapping = { 'LTE-LTE': 256, 'NR-SA': 16384 };
-      const invalidValues = ["-1", "0", "1", ""];
+      const mapping = { 'LTE-LTE': 256, 'NR-NSA': 0, 'NR-SA': 16384 };
+      const invalidValues = ["-1", "0", "1", "", "9223372036854775807"];
       const rows = [];
       
       //split the text at newline and filter empty entries
@@ -421,11 +421,15 @@
         row.LAC = (!invalidValues.includes(row.LAC)) ? row.LAC : "Unknown";
         //update Cell entry if value is invalid
         row.Cell = (!invalidValues.includes(row.Cell)) ? row.Cell : "Unknown";
+        //update PCI entry if value is invalid
+        row.PCI = (!invalidValues.includes(row.PCI)) ? row.PCI : "Unknown";
+        //update ARFCN entry if value is invalid
+        row.ARFCN = (!invalidValues.includes(row.ARFCN)) ? row.ARFCN : "Unknown";
 
         //get the divisor for the calculation of the NB based on TypeSubtype
         const divisor = mapping[row.TypeSubtype] ?? 1;
         //create a new NB entry by first convert and check if the Cell-ID is a finite number and then calculate the NB by converting the Cell-ID to a number, divide it by the divisor, and turning it into a while number
-        row.NB = Number.isFinite(Number(row.Cell)) ? String(Math.trunc(Number(row.Cell) / divisor)) : "Unknown";
+        row.NB = Number.isFinite(Number(row.Cell)) && divisor !== 0 ? String(Math.trunc(Number(row.Cell) / divisor)) : "Unknown";
 
         //create a new Band entry with the getBandNumber function
         row.Band = getBandNumber(row.ARFCN, row.Type);
@@ -503,7 +507,6 @@
           //calculate the frequency with the formular FDL = FDL_low + 0.1 * (NDL - N_offs_UL)
           return new String(parseInt(matchingEutraBand.dl_freq_low_mHz) + 0.1 * (arfcnInt - parseInt(matchingEutraBand.n_offs_dl)));
         }
-        return "LTE Band ?";
       //frequency calculation when type is NR and ARFCN is not NaN
       } else if (type.includes('NR') && !isNaN(arfcnInt)) {
         //check whether nrBandsSupport is not an empty array
@@ -521,9 +524,8 @@
           //calculate the frequency with the formular FDL = F_ref_offs + delta-freq_Global * (N_REF - N_REF-Offs)
           return new String(parseInt(matchingNrBandSupport.freq_ref_offs_mHz) + (parseInt(matchingNrBandSupport.delta_freq_global_kHz) / 1000) * (arfcnInt - parseInt(matchingNrBandSupport["n_ref-offs"])));
         }
-        return "NR Band ?";
       }
-      return "Unknown Band";
+      return "Unknown";
     }
 
     function determineMarkerColor(signal) {
@@ -997,7 +999,7 @@
         //check if which is small enough
         if (window.innerWidth < 768) {
           //collapse the card body programmatically
-          bootstrap.Collapse.getOrCreateInstance(document.getElementById('filtersCardBody')).hide();
+          document.getElementById("mobileHeader").click();
           lastIsDesktop = false;
         }
       };
