@@ -64,8 +64,8 @@
     }
   </style>
 </head>
-<body class="bg-dark d-flex flex-column" data-bs-theme="dark"> <!-- body with a dark background and a dark color theme as a flexible column-->
-  <nav class="navbar bg-dark border-bottom border-secondary"> <!-- styled navbar with a dark background and a border at the bottom with a light color -->
+<body class="d-flex flex-column" data-bs-theme="dark"> <!-- body with a dark color theme as a flexible column -->
+  <nav class="navbar border-bottom border-secondary" id="navbar"> <!-- styled navbar with a border at the bottom in a light color -->
     <div class="container-fluid"> <!-- always full width container -->
       <div class="d-flex flex-column cursor-default"> <!-- flexible in vertical orientation with default cursor override -->
         <h1 class="navbar-brand mb-0"> <!-- the brand of the website with no margin bottom -->
@@ -78,21 +78,21 @@
       </a>
     </div>
   </nav>
-  <div class="bg-primary-subtle container-fluid d-flex flex-grow-1 py-3"> <!-- with a dark blue background always full width flexible container which always fills the screen height with 1rem padding top & bottom -->
+  <div class="bg-primary-subtle container-fluid d-flex flex-grow-1 py-3" id="contentContainer"> <!-- with a dark blue background always full width flexible container which always fills the screen height with 1rem padding top & bottom -->
     <div class="row flex-grow-1 g-3"> <!-- row which always fills the screen height with a gutter between columns of 1.5rem -->
       <div class="col-12 col-md-5 col-xl-4 col-xxl-3"> <!-- element either spanning all 12/12 columns on screen-width < 768px, spanning 5/12 columns on screen-width >= 768px, spanning 4/12 columns on screen-width >= 1200 and spanning 3/12 columns on screen-width >= 1400px -->
-        <div class="card h-100 rounded-4 border-secondary-subtle bg-secondary-subtle"> <!-- a card with 100% height in relation to the parent element, a 1rem rounded & subtle lighter border and darker background -->
+        <div class="card h-100 rounded-4 border-secondary-subtle bg-secondary-subtle" id="configCard"> <!-- a card with 100% height in relation to the parent element, a 1rem rounded & subtle lighter border and darker background -->
           <div class="card-header d-md-none cursor-pointer rounded-top-4" data-bs-toggle="collapse" data-bs-target="#filtersCardBody" aria-expanded="true" aria-controls="filtersCardBody" id="mobileHeader"> <!-- header of the card for screen-width < 768px, controls the manual collapsing of the card body, has a manual override for the cursor as a pointer and a border radius for the top-->
-            <h5 class="card-title mb-0 text-light d-flex justify-content-between align-items-center">  <!-- title of the card with no margin bottom and light text as a flexbox which pushes the two items inside apart and vertically centers the items -->
+            <h5 class="card-title mb-0 d-flex justify-content-between align-items-center">  <!-- title of the card with no margin bottom as a flexbox which pushes the two items inside apart and vertically centers the items -->
               <span>Data & Filters</span>
               <i class="bi bi-chevron-down" id="collapseIcon"></i> <!-- bootstrap icons down arrow -->
             </h5>
           </div>
           <div id="filtersCardBody" class="card-body collapse show"> <!-- card body which is collapsable but not collapsed on load -->
-            <h5 class="card-title mb-3 text-light d-none d-md-block">Data & Filters</h5>  <!-- title of the card with 1rem margin bottom, light text and only visible for screen-width >= 768px -->
+            <h5 class="card-title mb-3 d-none d-md-block">Data & Filters</h5>  <!-- title of the card with 1rem margin bottom and only visible for screen-width >= 768px -->
             <div class="mb-3"> <!-- element with 1rem margin bottom -->
               <label for="csvFile" class="form-label text-secondary small-text text-uppercase">Select CSV</label> <!-- styled label for the CSV file picker button with a lighter text color, smaller text size and uppercase text-->
-              <input class="form-control bg-transparent text-light" type="file" id="csvFile" accept=".csv" autocomplete="off"/> <!-- styled file picker button with a transparent background and light text -->
+              <input class="form-control bg-transparent text-secondary border-secondary" type="file" id="csvFile" accept=".csv" autocomplete="off"/> <!-- styled file picker button with a transparent background and light text -->
             </div>
             <div class="mb-3 d-flex justify-content-between align-items-center"> <!-- element with 1rem margin bottom which is a flexbox which pushes the two items inside apart and vertically centers the items -->
               <a id="btnHelp" class="btn btn-sm btn-outline-info" href="https://github.com/NerdTech-aut/cmcdv?tab=readme-ov-file#faq" target="_blank">Help</a> <!-- link which is styled as a compact outlined info button -->
@@ -252,14 +252,19 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-          <button type="button" class="btn btn-success" id="downloadButton">Yes</button>
+          <button type="button" class="btn btn-success" id="btnDownload">Yes</button>
         </div>
       </div>
     </div>
   </div>
 
-  <footer class="bg-dark text-secondary text-center py-2 border-top border-secondary"> <!-- footer with a dark background, gray & centered text, padding top and bottom of 0.5rem and a border top with a light color -->
+  <footer class="text-secondary px-3 py-2 border-top border-secondary d-flex justify-content-between align-items-center"> <!-- footer with gray text, padding left and right of 1rem, padding top and bottom of 0.5rem, border top with a light color as a flexbox which pushes the two items inside apart and vertically centers the items -->
     <small>2026 NerdTech @ <a class="text-decoration-none" href="https://www.lteforum.at/user/nerdtech.4949/">LTEForum.at</a></small>
+    <div id="themeToggle">
+      <label class="cursor-pointer small-text"> <!-- default cursor override and a custom small text -->
+        <i class="bi bi-moon-fill" id="themeIcon"></i> <!-- bootstrap icons moon -->
+      </label>
+    </div>
   </footer>
 
   <script
@@ -271,26 +276,45 @@
   </script>
 
   <script>
-    let eutraBands = [];
-    let nrBands = [];
-    let nrBandsSupport = [];
-    let mapTemplate = "";
 
-    loadData("https://cdn.jsdelivr.net/gh/NerdTech-aut/arfcn-to-frequency-files@refs/heads/main/EUTRA_operating_bands_frequencies_arfcn-numbers.json")
-      .then(data => { eutraBands = data || []; })
-      .catch(console.error);
+    const browserTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    const savedTheme = localStorage.getItem('savedTheme') || browserTheme;
 
-    loadData("https://cdn.jsdelivr.net/gh/NerdTech-aut/arfcn-to-frequency-files@refs/heads/main/NR_operating_bands_frequencies_duplex-types_arfcn-numbers.json")
-      .then(data => { nrBands = data || []; })
-      .catch(console.error);
+    const bodyElement = document.body;
+    const contentContainer = document.getElementById('contentContainer');
+    const configCard = document.getElementById('configCard');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
 
-    loadData("https://cdn.jsdelivr.net/gh/NerdTech-aut/arfcn-to-frequency-files@refs/heads/main/NR-ARFCN_parameters_for_the_global_frequency_raster.json")
-      .then(data => { nrBandsSupport = data || []; })
-      .catch(console.error);
+    //set the theme on load
+    updateTheme(savedTheme, savedTheme === 'light', savedTheme === 'dark');
 
-    loadData("./assets/resources/map-template.html", 'text')
-      .then(data => { mapTemplate = data || ""; })
-      .catch(console.error);
+    const filterPlmnSelected = document.getElementById('filterPlmnSelected');
+    const filterTypeSelected = document.getElementById('filterTypeSelected');
+    const filterBandSelected = document.getElementById('filterBandSelected');
+    const filterArfcnSelected = document.getElementById('filterArfcnSelected');
+    const filterNbSelected = document.getElementById('filterNbSelected');
+    const filterCellSelected = document.getElementById('filterCellSelected');
+
+    const visibleCount = document.getElementById("visibleCount");
+    const totalCount = document.getElementById("totalCount");
+    
+    const mobileHeader = document.getElementById("mobileHeader");
+    const collapseIcon = document.getElementById("collapseIcon");
+    const cardBody = document.getElementById('filtersCardBody');
+
+    const csvFile = document.getElementById("csvFile");
+    const btnClearFilters = document.getElementById("btnClearFilters");
+    const btnSaveMap = document.getElementById('btnSaveMap');
+    const btnDownload = document.getElementById('btnDownload');
+
+    const emptyMapModel = new bootstrap.Modal(document.getElementById('emptyMapModel'));
+    const successfulMapModelText = document.getElementById('successfulMapModelText')
+    const successfulMapModel = new bootstrap.Modal(document.getElementById('successfulMapModel'));
+
+    const headers = ['Latitude', 'Longitude', 'Altitude', 'MCC', 'MNC', 'LAC', 'Cell', 'Signal', 'Type', 'Subtype', 'ARFCN', 'PCI'];
+    const mapping = { 'LTE-LTE': 256, 'NR-NSA': 0, 'NR-SA': 16384 };
+    const invalidValues = ["-1", "0", "1", "", "9223372036854775807"];
 
     let map;
     let markerLayer = L.layerGroup();
@@ -311,6 +335,27 @@
 
     let lastIsDesktop = window.innerWidth >= 768;
     let fileName = "No file selected";
+    
+    let eutraBands = [];
+    let nrBands = [];
+    let nrBandsSupport = [];
+    let mapTemplate = "";
+
+    loadData("https://cdn.jsdelivr.net/gh/NerdTech-aut/arfcn-to-frequency-files@refs/heads/main/EUTRA_operating_bands_frequencies_arfcn-numbers.json")
+      .then(data => { eutraBands = data || []; })
+      .catch(console.error);
+
+    loadData("https://cdn.jsdelivr.net/gh/NerdTech-aut/arfcn-to-frequency-files@refs/heads/main/NR_operating_bands_frequencies_duplex-types_arfcn-numbers.json")
+      .then(data => { nrBands = data || []; })
+      .catch(console.error);
+
+    loadData("https://cdn.jsdelivr.net/gh/NerdTech-aut/arfcn-to-frequency-files@refs/heads/main/NR-ARFCN_parameters_for_the_global_frequency_raster.json")
+      .then(data => { nrBandsSupport = data || []; })
+      .catch(console.error);
+
+    loadData("./assets/resources/map-template.html", 'text')
+      .then(data => { mapTemplate = data || ""; })
+      .catch(console.error);
 
     function initMap() {
       map = L.map("map",{zoomControl: false}).setView([47.6965, 13.3457], 7);
@@ -378,10 +423,7 @@
     }
 
     function parseCsv(text) {
-      const headers = ['Latitude', 'Longitude', 'Altitude', 'MCC', 'MNC', 'LAC', 'Cell', 'Signal', 'Type', 'Subtype', 'ARFCN', 'PCI'];
-      const mapping = { 'LTE-LTE': 256, 'NR-NSA': 0, 'NR-SA': 16384 };
-      const invalidValues = ["-1", "0", "1", "", "9223372036854775807"];
-      const rows = [];
+      let rows = [];
       
       //split the text at newline and filter empty entries
       const lines = text.split("\n").filter(l => l.trim().length > 0);
@@ -505,7 +547,7 @@
             }
           });
           //calculate the frequency with the formular FDL = FDL_low + 0.1 * (NDL - N_offs_UL)
-          return new String(parseInt(matchingEutraBand.dl_freq_low_mHz) + 0.1 * (arfcnInt - parseInt(matchingEutraBand.n_offs_dl)));
+          return new String(Math.round((parseInt(matchingEutraBand.dl_freq_low_mHz) + 0.1 * (arfcnInt - parseInt(matchingEutraBand.n_offs_dl)) + Number.EPSILON) * 100) / 100);
         }
       //frequency calculation when type is NR and ARFCN is not NaN
       } else if (type.includes('NR') && !isNaN(arfcnInt)) {
@@ -522,7 +564,7 @@
             }
           });
           //calculate the frequency with the formular FDL = F_ref_offs + delta-freq_Global * (N_REF - N_REF-Offs)
-          return new String(parseInt(matchingNrBandSupport.freq_ref_offs_mHz) + (parseInt(matchingNrBandSupport.delta_freq_global_kHz) / 1000) * (arfcnInt - parseInt(matchingNrBandSupport["n_ref-offs"])));
+          return new String(Math.round((parseInt(matchingNrBandSupport.freq_ref_offs_mHz) + (parseInt(matchingNrBandSupport.delta_freq_global_kHz) / 1000) * (arfcnInt - parseInt(matchingNrBandSupport["n_ref-offs"])) + Number.EPSILON) * 100) / 100);
         }
       }
       return "Unknown";
@@ -673,39 +715,39 @@
             currentFilters.arfcn = "";
             currentFilters.nb = "";
             currentFilters.cell = "";
-            document.getElementById('filterTypeSelected').textContent = 'All';
-            document.getElementById('filterBandSelected').textContent = 'All';
-            document.getElementById('filterArfcnSelected').textContent = 'All';
-            document.getElementById('filterNbSelected').textContent = 'All';
-            document.getElementById('filterCellSelected').textContent = 'All';
+            filterTypeSelected.textContent = 'All';
+            filterBandSelected.textContent = 'All';
+            filterArfcnSelected.textContent = 'All';
+            filterNbSelected.textContent = 'All';
+            filterCellSelected.textContent = 'All';
           } else if (key === 'Type') {
             currentFilters.type = val;
             currentFilters.band = "";
             currentFilters.arfcn = "";
             currentFilters.nb = "";
             currentFilters.cell = "";
-            document.getElementById('filterBandSelected').textContent = 'All';
-            document.getElementById('filterArfcnSelected').textContent = 'All';
-            document.getElementById('filterNbSelected').textContent = 'All';
-            document.getElementById('filterCellSelected').textContent = 'All';
+            filterBandSelected.textContent = 'All';
+            filterArfcnSelected.textContent = 'All';
+            filterNbSelected.textContent = 'All';
+            filterCellSelected.textContent = 'All';
           } else if (key === 'Band') {
             currentFilters.band = val;
             currentFilters.arfcn = "";
             currentFilters.nb = "";
             currentFilters.cell = "";
-            document.getElementById('filterArfcnSelected').textContent = 'All';
-            document.getElementById('filterNbSelected').textContent = 'All';
-            document.getElementById('filterCellSelected').textContent = 'All';
+            filterArfcnSelected.textContent = 'All';
+            filterNbSelected.textContent = 'All';
+            filterCellSelected.textContent = 'All';
           } else if (key === 'Arfcn') {
             currentFilters.arfcn = val;
             currentFilters.nb = "";
             currentFilters.cell = "";
-            document.getElementById('filterNbSelected').textContent = 'All';
-            document.getElementById('filterCellSelected').textContent = 'All';
+            filterNbSelected.textContent = 'All';
+            filterCellSelected.textContent = 'All';
           } else if (key === 'Nb') {
             currentFilters.nb = val;
             currentFilters.cell = "";
-            document.getElementById('filterCellSelected').textContent = 'All';
+            filterCellSelected.textContent = 'All';
           } else if (key === 'Cell') {
             currentFilters.cell = val;
           }
@@ -809,7 +851,7 @@
         const marker = L.circleMarker([p.Latitude, p.Longitude], circleMarkerOptions);
 
         //create the popup html code
-        let popupHtml = 
+        const popupHtml = 
         `<table class="table table-sm table-striped">
           <tr>
             <th scope="row">PLMN</th>      <td>${p.PLMN}</td>
@@ -877,7 +919,7 @@
 
       //after the filtered points were added as markers
       //update the counter for the visible points
-      document.getElementById("visibleCount").textContent = filtered.length;
+      visibleCount.textContent = filtered.length;
 
       //check if one or more markers was added to the map
       if (latLngs.length > 0) {
@@ -888,11 +930,10 @@
       }
     }
 
-    document.getElementById('btnSaveMap').addEventListener('click', async event => {
+    btnSaveMap.addEventListener('click', async event => {
       try {
         //check if there are markers to save
         if (markers.length === 0) {
-          const emptyMapModel = new bootstrap.Modal(document.getElementById('emptyMapModel'));
           emptyMapModel.show();
           //skip the rest of the function when there are no markers on the map to save
           return;
@@ -922,15 +963,10 @@
           await writable.close();
         //when there is no save file picker support
         } else {
-          const successfulMapModelText = document.getElementById('successfulMapModelText')
           successfulMapModelText.innerText = `Do you want to download the file ${suggestedFileName} with ${markers.length} points?`
-
-          const successfulMapModel = new bootstrap.Modal(document.getElementById('successfulMapModel'));
           successfulMapModel.show();
-
-          const downloadButton = document.getElementById('downloadButton');
-          downloadButton.removeEventListener('input', downloadButton._customDownloadHandler);
-          downloadButton._customDownloadHandler = function(e) {
+          btnDownload.removeEventListener('input', btnDownload._customDownloadHandler);
+          btnDownload._customDownloadHandler = function(e) {
             successfulMapModel.hide()
             //create a file blob with the file content and setting the file type
             const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
@@ -952,7 +988,7 @@
               URL.revokeObjectURL(url);
             }, 100);
           }
-          downloadButton.addEventListener('click', downloadButton._customDownloadHandler);
+          btnDownload.addEventListener('click', btnDownload._customDownloadHandler);
         }
       } catch (err) {
         console.error('Save cancelled or failed:', err);
@@ -960,7 +996,7 @@
     });
 
     //csv uploader function
-    document.getElementById("csvFile").addEventListener("change", event => {
+    csvFile.addEventListener("change", event => {
       //get the new file
       const file = event.target.files[0];
       //when the new file is empty but there was another file selected previously
@@ -974,7 +1010,7 @@
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(previousFile);
         //assign the files in the dataTransfer object to the file-input element which overrides that there is no file selected
-        document.getElementById('csvFile').files = dataTransfer.files;
+        csvFile.files = dataTransfer.files;
       }
       //get the filename but if now no file was selected and there was previously a file keep the filename of the previously selected file
       fileName = (file != null) ? file.name : (fileName != "No file selected" ? fileName : "No file selected");
@@ -987,9 +1023,8 @@
       reader.onload = e => {
         //get the result from the reading and use custom parseCsv function to parse the file then save the result in the allPoints variable
         allPoints = parseCsv(e.target.result);
-        
         //update the total points counter
-        document.getElementById("totalCount").textContent = allPoints.length;
+        totalCount.textContent = allPoints.length;
 
         resetDropdowns();
         updateFilterOptions();
@@ -999,7 +1034,7 @@
         //check if which is small enough
         if (window.innerWidth < 768) {
           //collapse the card body programmatically
-          document.getElementById("mobileHeader").click();
+          mobileHeader.click();
           lastIsDesktop = false;
         }
       };
@@ -1008,7 +1043,7 @@
     });
 
     //function to clear all filters on button click
-    document.getElementById("btnClearFilters").addEventListener("click", () => {
+    btnClearFilters.addEventListener("click", () => {
       resetDropdowns();
       updateFilterOptions();
       applyFilters();
@@ -1033,9 +1068,7 @@
       });
     }
 
-    document.getElementById("mobileHeader").addEventListener('click', () => {
-      const mobileHeader = document.getElementById("mobileHeader")
-      const collapseIcon = document.getElementById("collapseIcon")
+    mobileHeader.addEventListener('click', () => {
       //when the mobile card body is now visible 
       if (mobileHeader.getAttribute('aria-expanded') == "true") {
         //indicate that the card is now expanded with the down arrow
@@ -1055,6 +1088,27 @@
       }
     });
 
+    // Theme toggle event listener
+    themeToggle.addEventListener('click', () => {
+      //determine the new theme based on the current icon
+      const newTheme = themeIcon.classList.contains('bi-moon-fill') ? 'light' : 'dark';
+      //save the new theme to local storage
+      localStorage.setItem('savedTheme', newTheme);
+      //apply the new theme
+      updateTheme(newTheme, newTheme === 'light', newTheme === 'dark');
+    });
+
+    function updateTheme(newTheme, isLight, isDark) {
+      bodyElement.setAttribute('data-bs-theme', newTheme);
+      bodyElement.classList.toggle('bg-dark-subtle', isLight);
+      contentContainer.classList.toggle('bg-light-subtle', isLight);
+      contentContainer.classList.toggle('bg-primary-subtle', isDark);
+      configCard.classList.toggle('bg-light', isLight);
+      configCard.classList.toggle('bg-secondary-subtle', isDark);
+      themeIcon.classList.toggle('bi-sun-fill', isLight);
+      themeIcon.classList.toggle('bi-moon-fill', isDark);
+    }
+
     //initialize the map once the DOM is ready
     window.addEventListener("load", () => {
       initMap();
@@ -1073,8 +1127,6 @@
       if (isDesktop !== lastIsDesktop) {
         //update the previous status variable
         lastIsDesktop = isDesktop;
-        //get the card body element
-        const cardBody = document.getElementById('filtersCardBody')
         //when width is 768px or above
         if (isDesktop) {
           console.log(window.innerWidth)
@@ -1085,10 +1137,9 @@
           //hide the card body
           cardBody.classList.remove("show")
           //update the mobile card header arrow
-          document.getElementById("collapseIcon").classList.replace('bi-chevron-down', 'bi-chevron-up')
+          collapseIcon.classList.replace('bi-chevron-down', 'bi-chevron-up')
 
           //update bottom border and shape of the mobile card header
-          const mobileHeader = document.getElementById("mobileHeader")
           mobileHeader.classList.add('border-bottom-0')
           mobileHeader.classList.add('rounded-bottom-4')
         }
