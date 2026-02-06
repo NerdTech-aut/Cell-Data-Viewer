@@ -75,6 +75,14 @@
       margin-bottom: 0.125rem;
       vertical-align: middle;
     }
+
+    .accordion-button:not(.collapsed) {
+      color: inherit;
+      background-color: inherit;
+      /*ensure that the bottom most accordion button changes shape when the section is opened or closed*/
+      border-bottom-left-radius: 0px !important;
+      border-bottom-right-radius: 0px !important;
+    }
   </style>
 </head>
 <body class="d-flex flex-column" data-bs-theme="dark"> <!-- body with a dark color theme as a flexible column -->
@@ -84,7 +92,7 @@
         <h1 class="navbar-brand mb-0"> <!-- the brand of the website with no margin bottom -->
           <i class="bi bi-file-bar-graph-fill"></i> <!-- bootstrap icons reception bars --> CM CSV Data Viewer
         </h1>
-        <h2 class="text-secondary m-0 small-text">by NerdTech</h2><!-- gray text with no margin and a custom small text -->
+        <h2 class="text-secondary m-0 small-text"><a href="https://nerdtech.one" target="_blank" class=" text-decoration-none">by NerdTech</a></h2><!-- gray text with no margin and a custom small text -->
       </div>
       <a href="https://github.com/NerdTech-aut/cmcdv" class="text-decoration-none text-secondary cursor-pointer" target="_blank"> <!-- link with no text decoration, gray text and default cursor override -->
         <span><i class="bi bi-file-earmark-code"></i> <!-- bootstrap code icon --> GitHub</span>
@@ -98,7 +106,7 @@
           <div class="card-header d-md-none cursor-pointer rounded-top-4" data-bs-toggle="collapse" data-bs-target="#filtersCardBody" aria-expanded="true" aria-controls="filtersCardBody" id="mobileHeader"> <!-- header of the card for screen-width < 768px, controls the manual collapsing of the card body, has a manual override for the cursor as a pointer and a border radius for the top-->
             <h5 class="card-title mb-0 d-flex justify-content-between align-items-center">  <!-- title of the card with no margin bottom as a flexbox which pushes the two items inside apart and vertically centers the items -->
               <span>Data & Filters</span>
-              <i class="bi bi-chevron-down" id="collapseIcon"></i> <!-- bootstrap icons down arrow -->
+              <i class="bi bi-chevron-up" id="collapseIcon"></i> <!-- bootstrap icons down arrow -->
             </h5>
           </div>
           <div id="filtersCardBody" class="card-body collapse show"> <!-- card body which is collapsable but not collapsed on load -->
@@ -272,7 +280,7 @@
   </div>
 
   <footer class="text-secondary px-3 py-2 border-top border-secondary d-flex justify-content-between align-items-center"> <!-- footer with gray text, padding left and right of 1rem, padding top and bottom of 0.5rem, border top with a light color as a flexbox which pushes the two items inside apart and vertically centers the items -->
-    <small>2026 NerdTech @ <a class="text-decoration-none" href="https://www.lteforum.at/user/nerdtech.4949/">LTEForum.at</a></small>
+    <small><a href="#" data-bs-toggle="modal" data-bs-target="#imprintModal" class="text-decoration-none text-secondary">Impressum</a> | <a href="#" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal" class="text-decoration-none text-secondary">Datenschutz</a></small>
     <div id="themeToggle">
       <label class="cursor-pointer small-text"> <!-- default cursor override and a custom small text -->
         <i class="bi bi-moon-fill" id="themeIcon"></i> <!-- bootstrap icons moon -->
@@ -280,8 +288,437 @@
     </div>
   </footer>
 
+  <div class="modal fade" id="imprintModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header navbar-bg py-2">
+          <p class="navbar-brand fw-bold fs-5 navigation-link mb-0 py-1">CM CSV Data Viewer</p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row justify-content-center">
+              <div class="col-12 col-xxl-6 text-center mt-3 mb-4">
+                <h1>Impressum</h1>
+              </div>
+            </div>
+            <div class="row g-3 mb-3 justify-content-center">
+              <div class="col-12 col-xxl-6 text-center p-0">
+                <div class="accordion" id="imprintAccordion">
+                  <div class="accordion-item rounded-top-4">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button rounded-top-4 shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneImprint" aria-expanded="true" aria-controls="collapseOneImprint">
+                        Allgemeine Informationen & Anschrift
+                      </button>
+                    </h2>
+                    <div id="collapseOneImprint" class="accordion-collapse collapse show" data-bs-parent="#imprintAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Allgemeine Informationen & Anschrift</h3>
+                                <p><b>Informationen und Offenlegung gemäß &sect;5 (1) ECG, &sect; 25 MedienG, &sect; 63 GewO und &sect; 14 UGB</b></p>
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item border-0">Webseitenbetreiber: Florian Jeschek</li>
+                                  <li class="list-group-item border-0">Anschrift: Hohenfelsplatz 2/7 1120 Wien Österreich</li>
+                                  <li class="list-group-item border-0">E-Mail: <a href="mailto:contact@nerdtech.one">contact@nerdtech.one</a></li>
+                                  <li class="list-group-item border-0">Anwendbare Rechtsvorschrift: <a href="https://www.ris.bka.gv.at" target="_blank">www.ris.bka.gv.at</a></li>
+                                </ul>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://www.fairesrecht.at/kostenlos-impressum-erstellen-generator.php" target="_blank">Impressum Generator</a> in Kooperation mit <a href="https://rechtsanwaltwien.com/arzthaftung" target="_blank">Medizinrecht Rechtsanwalt</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoImprint" aria-expanded="true" aria-controls="collapseTwoImprint">
+                        Online Streitbeilegung
+                      </button>
+                    </h2>
+                    <div id="collapseTwoImprint" class="accordion-collapse collapse" data-bs-parent="#imprintAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Online Streitbeilegung</h3>
+                                <p>Verbraucher, welche in Österreich oder in einem sonstigen Vertragsstaat der ODR-VO niedergelassen sind, haben die Möglichkeit Probleme bezüglich dem entgeltlichen Kauf von Waren oder Dienstleistungen im Rahmen einer Online-Streitbeilegung (nach OS, AStG) zu lösen. Die Europäische Kommission stellt eine Plattform hierfür bereit: https://ec.europa.eu/consumers/odr</p>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://www.fairesrecht.at/kostenlos-impressum-erstellen-generator.php" target="_blank">Impressum Generator</a> in Kooperation mit <a href="https://rechtsanwaltwien.com/arzthaftung" target="_blank">Medizinrecht Rechtsanwalt</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThreeImprint" aria-expanded="false" aria-controls="collapseThreeImprint">
+                        Urheberrecht
+                      </button>
+                    </h2>
+                    <div id="collapseThreeImprint" class="accordion-collapse collapse" data-bs-parent="#imprintAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Urheberrecht</h3>
+                                <p>Die Inhalte dieser Webseite unterliegen, soweit dies rechtlich möglich ist, diversen Schutzrechten (z.B dem Urheberrecht). Jegliche Verwendung/Verbreitung von bereitgestelltem Material, welche urheberrechtlich untersagt ist, bedarf schriftlicher Zustimmung des Webseitenbetreibers.</p>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://www.fairesrecht.at/kostenlos-impressum-erstellen-generator.php" target="_blank">Impressum Generator</a> in Kooperation mit <a href="https://rechtsanwaltwien.com/arzthaftung" target="_blank">Medizinrecht Rechtsanwalt</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFiveImprint" aria-expanded="false" aria-controls="collapseFiveImprint">
+                        Haftungsausschluss
+                      </button>
+                    </h2>
+                    <div id="collapseFiveImprint" class="accordion-collapse collapse" data-bs-parent="#imprintAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Haftungsausschluss</h3>
+                                <p>Trotz sorgfältiger inhaltlicher Kontrolle übernimmt der Webseitenbetreiber dieser Webseite keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich. Sollten Sie dennoch auf ausgehende Links aufmerksam werden, welche auf eine Webseite mit rechtswidriger Tätigkeit/Information verweisen, ersuchen wir um dementsprechenden Hinweis, um diese nach § 17 Abs. 2 ECG umgehend zu entfernen.</p>
+                                <p>Die Urheberrechte Dritter werden vom Betreiber dieser Webseite mit größter Sorgfalt beachtet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden derartiger Rechtsverletzungen werden wir den betroffenen Inhalt umgehend entfernen.</p>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://www.fairesrecht.at/kostenlos-impressum-erstellen-generator.php" target="_blank">Impressum Generator</a> in Kooperation mit <a href="https://rechtsanwaltwien.com/arzthaftung" target="_blank">Medizinrecht Rechtsanwalt</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFourImprint" aria-expanded="false" aria-controls="collapseFourImprint">
+                        Markenhinweise
+                      </button>
+                    </h2>
+                    <div id="collapseFourImprint" class="accordion-collapse collapse" data-bs-parent="#imprintAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Markenhinweise</h3>
+                                <p>CellMapper ist eine Marke der CellMapper Services Limited</p>
+                                <p>GitHub und das GitHub Logo sind Marken der GitHub Inc.</p>
+                                <p class="mb-0">jsDelivr ist eine Marke der Volentio JSD Limited</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item rounded-bottom-4">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed rounded-bottom-4 shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSixImprint" aria-expanded="false" aria-controls="collapseSixImprint">
+                        Bildernachweis
+                      </button>
+                    </h2>
+                    <div id="collapseSixImprint" class="accordion-collapse collapse" data-bs-parent="#imprintAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3 rounded-bottom-4">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Bildernachweis</h3>
+                                <p>Die folgen Bilder werden im Rahmen der <a href="https://pixabay.com/service/license-summary/" target="_blank">Pixabay Content License</a> verwendet:</p>
+                                <ul class="list-group list-group-flush mb-3">
+                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/optical-fiber-meteor-shower-luminous-7204074/" target="_blank">optical-fiber-7204074</a></li>
+                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/optical-fiber-luminous-line-7204073/" target="_blank">optical-fiber-7204073</a></li>
+                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/luminous-lights-purple-lights-7204068/" target="_blank">luminous-7204068</a></li>
+                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/optical-fiber-meteor-shower-luminous-7204078/" target="_blank">optical-fiber-7204078</a></li>
+                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/luminous-lights-bokeh-night-lights-7204052/" target="_blank">luminous-7204052</a></li>
+                                </ul>
+                                <p>Das Favicon wird unter der <a href="https://fontawesome.com/license/free" target="_blank">Font Awesome Free License</a> von Fonticons, Inc. verwendet. In diesem Zusammenhang gilt für SVG Icons, wie sie in diesem Fall verwendet werden, die <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item"><a href="https://fontawesome.com/" target="_blank">Fonticons, Inc.</a> - <a href="https://fontawesome.com/icons/circle-nodes?f=classic&s=solid" target="_blank">circle-nodes</a><p>Die SVG Datei wurde dahingehend verändert, dass sich die Füllfarbe automatisch an die Hintergrundfarbe anpasst.</p></li>
+                                </ul>
+                                <p>Weitere Icons sind <a href="https://icons.getbootstrap.com/" target="_blank">Bootstrap Icons</a> vom Bootstrap team und Mitwirkenden unter der <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" target="_blank">MIT License</a>.</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer navbar-bg">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="privacyPolicyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header navbar-bg py-2">
+          <p class="navbar-brand fw-bold fs-5 navigation-link mb-0 py-1">CM CSV Data Viewer</p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row justify-content-center">
+              <div class="col-12 col-xxl-6 text-center mt-3 mb-4">
+                <h1>Datenschutzerklärung</h1>
+              </div>
+            </div>
+            <div class="row g-3 mb-3 justify-content-center">
+              <div class="col-12 col-xxl-6 text-center p-0">
+                <div class="accordion" id="privacyPolicyAccordion">
+                  <div class="accordion-item rounded-top-4">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button rounded-top-4 shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnePrivacyPolicy" aria-expanded="true" aria-controls="collapseOnePrivacyPolicy">
+                        Allgemeine Informationen
+                      </button>
+                    </h2>
+                    <div id="collapseOnePrivacyPolicy" class="accordion-collapse collapse show" data-bs-parent="#privacyPolicyAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Allgemeine Informationen</h3>
+                                <p>In folgender Datenschutzerklärung informiere ich Sie über die wichtigsten Aspekte der Datenverarbeitung im Rahmen unserer Webseite. Ich erhebe und verarbeite personenbezogene Daten nur auf Grundlage der gesetzlichen Bestimmungen (Datenschutzgrundverordnung, Telekommunikationsgesetz 2003).</p>
+                                <p>Sobald Sie als Benutzer auf diese Webseite zugreifen oder diese besuchen wird Ihre IP-Adresse, Beginn sowie Beginn und Ende der Sitzung erfasst. Dies ist technisch bedingt und stellt somit ein berechtigtes Interesse iSv Art 6 Abs 1 lit f DSGVO.</p>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://fairesrecht.at/kostenlos-datenschutzerklaerung-erstellen-generator.php" target="_blank">DSGVO Datenschutz Generator</a> in Kooperation mit <a href="https://kredit123.at/home" target="_blank">Online Kreditvergleich</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoPrivacyPolicy" aria-expanded="true" aria-controls="collapseTwoPrivacyPolicy">
+                        Kontakt
+                      </button>
+                    </h2>
+                    <div id="collapseTwoPrivacyPolicy" class="accordion-collapse collapse" data-bs-parent="#privacyPolicyAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Kontakt</h3>
+                                <p>Wenn Sie mich per Email kontaktieren, dann werden die von Ihnen an übermittelten Daten zwecks Bearbeitung Ihrer Anfrage oder für den Fall von weiteren Anschlussfragen gespeichert. Es erfolgt, ohne Ihre Einwilligung, keine Weitergabe Ihrer übermittelten Daten.</p>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://fairesrecht.at/kostenlos-datenschutzerklaerung-erstellen-generator.php" target="_blank">DSGVO Datenschutz Generator</a> in Kooperation mit <a href="https://kredit123.at/home" target="_blank">Online Kreditvergleich</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThreePrivacyPolicy" aria-expanded="false" aria-controls="collapseThreePrivacyPolicy">
+                        Hosting mit GitHub Pages
+                      </button>
+                    </h2>
+                    <div id="collapseThreePrivacyPolicy" class="accordion-collapse collapse" data-bs-parent="#privacyPolicyAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Hosting mit Github Pages</h3>
+                                <p>Der Hoster erhebt in sog. Logfiles folgende Daten, die Ihr Browser übermittelt:</p>
+                                <p>IP-Adresse, die Adresse der vorher besuchten Website (Referer Anfrage-Header), Datum und Uhrzeit der Anfrage, Zeitzonendifferenz zur Greenwich Mean Time, Inhalt der Anforderung, HTTP-Statuscode, übertragene Datenmenge, Website, von der die Anforderung kommt und Informationen zu Browser und Betriebssystem.</p>
+                                <p>Das ist erforderlich, um die Website anzuzeigen und die Stabilität und Sicherheit zu gewährleisten. Dies entspricht dem berechtigten Interesse im Sinne des Art. 6 Abs. 1 S. 1 lit. f DSGVO.</p>
+                                <p>Es erfolgt kein Tracking und ich habe auf diese Daten keinen direkten Zugriff.</p>
+                                <p>Ich setzen für die Zurverfügungstellung dieser Website folgenden Hoster ein:</p>
+                                <p>GitHub Inc.</p>
+                                <p>88 Colin P Kelly Jr St</p>
+                                <p>San Francisco, CA 94107, United States</p>
+                                <p>GitHub B.V.</p>
+                                <p>Prins Bernhardplein 200</p>
+                                <p>Amsterdam 1097JB, The Netherlands</p>
+                                <p><a href="mailto:dpo@github.com">dpo@github.com</a></p>
+                                <p>Dieser ist Empfänger Ihrer personenbezogenen Daten. Dies entspricht dem berechtigten Interesse im Sinne des Art. 6 Abs. 1 S. 1 lit. f DSGVO, selbst keinen Server in den eigenen Räumlichkeiten vorhalten zu müssen. Serverstandort ist USA.</p>
+                                <p>Weitere Informationen zu Widerspruchs- und Beseitigungsmöglichkeiten gegenüber GitHub finden Sie unter:</p>
+                                <p><a href="https://docs.github.com/en/site-policy/privacy-policies" target="_blank">https://docs.github.com/en/site-policy/privacy-policies</a></p>
+                                <p>Sie haben das Recht der Verarbeitung zu widersprechen. Ob der Widerspruch erfolgreich ist, ist im Rahmen einer Interessenabwägung zu ermitteln.</p>
+                                <p>Die Daten werden gelöscht, sobald der Zweck der Verarbeitung entfällt.</p>
+                                <p>Die Verarbeitung der unter diesem Abschnitt angegebenen Daten ist weder gesetzlich noch vertraglich vorgeschrieben. Die Funktionsfähigkeit der Website ist ohne die Verarbeitung nicht gewährleistet.</p>
+                                <p>GitHub hat Compliance-Maßnahmen für internationale Datenübermittlungen umgesetzt. Diese gelten für alle weltweiten Aktivitäten, bei denen GitHub personenbezogene Daten von natürlichen Personen in der EU verarbeitet. Diese Maßnahmen basieren auf den EU-Standardvertragsklauseln (SCCs). Weitere Informationen finden Sie unter:</p>
+                                <p><a href="https://github.com/customer-terms/github-data-protection-agreement" target="_blank">https://github.com/customer-terms/github-data-protection-agreement</a></p>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://opr.vc" target="_blank">open privacy by opr.vc</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFourPrivacyPolicy" aria-expanded="false" aria-controls="collapseFourPrivacyPolicy">
+                        jsDelivr CDN
+                      </button>
+                    </h2>
+                    <div id="collapseFourPrivacyPolicy" class="accordion-collapse collapse" data-bs-parent="#privacyPolicyAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>jsDelivr CDN</h3>
+                                <p>Zur Optimierung der Abrufgeschwindigkeit, der Gestaltung und Darstellung der Inhalte des Internetauftritts auf unterschiedlichen Endgeräten setze ich in diesem Internetauftritt den Dienst jsdeliver.com, ein Content Delivery Network („CDN“), ein. Hierbei handelt es sich um einen Open-Source-Dienst der</p>
+                                <p>Volentio JSD Limited</p>
+                                <p>Suite 2a1, Northside House, Mount Pleasant,</p> 
+                                <p>Barnet, EN4 9EB, England, United Kingdom.</p>
+                                <p>Um die Inhalte dieses Internetauftritts schnell ausliefern zu können, greift der Dienst auf sog. JavaScript-Bibliotheken zurück. Dabei werden entsprechende Dateien von einem Drittserver geladen, der Ihre IP-Adresse erfasst. Ich haben dabei keinen Einfluss darauf, ob Ihre IP-Adresse durch Dritte zu statistischen Zwecken verarbeitet wird.</p>
+                                <p>Die Volentio JSD Limited bietet unter <a href="https://www.jsdelivr.com/terms/privacy-policy" rel="nofollow noopener" target="_blank">https://www.jsdelivr.com/terms/privacy-policy</a> weitergehende Datenschutzinformationen an.</p>
+                                <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f) DSGVO. Das berechtigte Interesse liegt in der Beschleunigung der Ladezeiten des Internetauftritts sowie in dessen Optimierung.</p>
+                                <p>Um die Ausführung des Java-Script-Codes von jsdeliver.net insgesamt zu verhindern, können Sie einen sog. Java-Script-Blocker installieren, wie bspw. noscript.net oder ghostery.com. Sollten Sie die Ausführung des Java-Script-Codes verhindern oder einschränken, kann dies aus technischen Gründen allerdings dazu führen, dass womöglich nicht sämtliche Inhalte und Funktionen unseres Internetauftritts verfügbar sind.</p>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://www.generator-datenschutzerklärung.de" target="_blank">Muster-Datenschutzerklärung</a> der <a href="https://www.bewertung-löschen24.de" target="_blank">Anwaltskanzlei Weiß &amp; Partner</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFourPrivacyPolicy" aria-expanded="false" aria-controls="collapseFourPrivacyPolicy">
+                        Kartendaten
+                      </button>
+                    </h2>
+                    <div id="collapseFourPrivacyPolicy" class="accordion-collapse collapse" data-bs-parent="#privacyPolicyAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Kartendaten</h3>
+                                <p>Um die Funktionalität dieser Webseite bereitzustellen werden die jeweils aktuellen Kartendaten der Dienste openstreetmap.org und arcgis.com über deren Tile-Server als Bilddateien abgerufen. </p>
+                                <p>Bei OpenStreetMap handelt es sich um einen Kartendienst welcher bereitgestellt wird von der</p>
+                                <p>OpenStreetMap Foundation</p>
+                                <p>St John's Innovation Centre, Cowley Road,</p> 
+                                <p>Cambridge, CB4 0WS, England, United Kingdom.</p>
+                                <p>Die OpenStreetMap Foundation bietet unter <a href="https://osmfoundation.org/wiki/Privacy_Policy" rel="nofollow noopener" target="_blank">https://osmfoundation.org/wiki/Privacy_Policy</a> weitergehende Datenschutzinformationen an.</p>
+                                <p>Bei ArcGIS handelt es sich um einen Kartendienst welcher bereitgestellt wird von der</p>
+                                <p>ESRI Inc.</p>
+                                <p>380 New York Street,</p> 
+                                <p>Redlands, 92373, California, USA.</p>
+                                <p>Die ESRI Inc. bietet unter <a href="https://trust.arcgis.com/en/privacy/privacy-tab-intro.htm" rel="nofollow noopener" target="_blank">https://trust.arcgis.com/en/privacy/privacy-tab-intro.htm</a> weitergehende Datenschutzinformationen an.</p>
+                                <p>Um die Verwendung der aktuellen Kartendaten sicherzustellen wird auf sogenannte Tile-Server zurückgegriffen. Dabei werden entsprechende Dateien von einem Drittserver geladen, der Ihre IP-Adresse erfasst. Ich haben dabei keinen Einfluss darauf, ob Ihre IP-Adresse durch Dritte zu statistischen Zwecken verarbeitet wird.</p>
+                                <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f) DSGVO. Das berechtigte Interesse liegt in der Verwendung von aktuellem Kartenmaterial als wichtige Grundlage für die Funktionalität dieser Webseite.</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFivePrivacyPolicy" aria-expanded="false" aria-controls="collapseFivePrivacyPolicy">
+                        Ihre Rechte als Betroffener
+                      </button>
+                    </h2>
+                    <div id="collapseFivePrivacyPolicy" class="accordion-collapse collapse" data-bs-parent="#privacyPolicyAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Ihre Rechte als Betroffener</h3>
+                                <p>Sie als Betroffener haben bezüglich Ihrer Daten, welche gespeichert sind grundsätzlich ein Recht auf:</p>
+                                <ul class="list-group list-group-flush mb-3">
+                                  <li class="list-group-item border-0">Auskunft</li>
+                                  <li class="list-group-item border-0">Löschung der Daten</li>
+                                  <li class="list-group-item border-0">Berichtigung der Daten</li>
+                                  <li class="list-group-item border-0">Übertragbarkeit der Daten</li>
+                                  <li class="list-group-item border-0">Widerruf und Widerspruch zur Datenverarbeitung</li>
+                                  <li class="list-group-item border-0">Einschränkung</li>
+                                </ul>
+                                <p>Wenn sie vermuten, dass im Zuge der Verarbeitung Ihrer Daten Verstöße gegen das Datenschutzrecht passiert sind, so haben Sie die Möglichkeit sich bei <a href="mailto:contact@nerdtech.one">contact@nerdtech.one</a> oder der Datenschutzbehörde zu beschweren.</p>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://fairesrecht.at/kostenlos-datenschutzerklaerung-erstellen-generator.php" target="_blank">DSGVO Datenschutz Generator</a> in Kooperation mit <a href="https://kredit123.at/home" target="_blank">Online Kreditvergleich</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item rounded-bottom-4">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed rounded-bottom-4 shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        Sie erreichen mich unter folgenden Kontaktdaten:
+
+                      </button>
+                    </h2>
+                    <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#privacyPolicyAccordion">
+                      <div class="accordion-body border-bottom border-secondary px-3 rounded-bottom-4">
+                        <div class="container-fluid px-0">
+                          <div class="row g-3">
+                            <div class="col-12">
+                              <div class="text-center px-3 h-100">
+                                <h3>Sie erreichen mich unter folgenden Kontaktdaten:</h3>
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item border-0">Webseitenbetreiber: Florian Jeschek</li>
+                                  <li class="list-group-item border-0">Email: 
+                                    <a href="mailto:contact@nerdtech.one" class="text-decoration-none">
+                                      contact@nerdtech.one
+                                    </a>
+                                  </li>
+                                </ul>
+                                <p class="mb-0">Rechtstext von Quelle: <a href="https://fairesrecht.at/kostenlos-datenschutzerklaerung-erstellen-generator.php" target="_blank">DSGVO Datenschutz Generator</a> in Kooperation mit <a href="https://kredit123.at/home" target="_blank">Online Kreditvergleich</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer navbar-bg">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
   </script>
 
   <script
@@ -1135,7 +1572,7 @@
       //when the mobile card body is now visible 
       if (mobileHeader.getAttribute('aria-expanded') == "true") {
         //indicate that the card is now expanded with the down arrow
-        collapseIcon.classList.replace('bi-chevron-up', 'bi-chevron-down')
+        collapseIcon.classList.replace('bi-chevron-down', 'bi-chevron-up')
         //show the border of the mobile card header
         mobileHeader.classList.remove('border-bottom-0')
         //bottom edge of the mobile card header should be straight
@@ -1143,7 +1580,7 @@
       //when the mobile card body is now invisible 
       } else {
         //indicate that the card is now collapsed with the up arrow
-        collapseIcon.classList.replace('bi-chevron-down', 'bi-chevron-up')
+        collapseIcon.classList.replace('bi-chevron-up', 'bi-chevron-down')
         //hide the border of the mobile card header
         mobileHeader.classList.add('border-bottom-0')
         //bottom edge of the mobile card header should be rounded
@@ -1200,7 +1637,7 @@
           //hide the card body
           cardBody.classList.remove("show")
           //update the mobile card header arrow
-          collapseIcon.classList.replace('bi-chevron-down', 'bi-chevron-up')
+          collapseIcon.classList.replace('bi-chevron-up', 'bi-chevron-down')
 
           //update bottom border and shape of the mobile card header
           mobileHeader.classList.add('border-bottom-0')
