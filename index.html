@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>CM CSV Data Viewer</title>
+  <title>Cell Data Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="./assets/resources/file-bar-graph-fill.svg"/>
 
@@ -90,11 +90,11 @@
     <div class="container-fluid"> <!-- always full width container -->
       <div class="d-flex flex-column cursor-default"> <!-- flexible in vertical orientation with default cursor override -->
         <h1 class="navbar-brand mb-0"> <!-- the brand of the website with no margin bottom -->
-          <i class="bi bi-file-bar-graph-fill"></i> <!-- bootstrap icons reception bars --> CM CSV Data Viewer
+          <i class="bi bi-file-bar-graph-fill"></i> <!-- bootstrap icons reception bars --> Cell Data Viewer
         </h1>
         <h2 class="text-secondary m-0 small-text"><a href="https://nerdtech.one" target="_blank" class=" text-decoration-none">by NerdTech</a></h2><!-- gray text with no margin and a custom small text -->
       </div>
-      <a href="https://github.com/NerdTech-aut/cmcdv" class="text-decoration-none text-secondary cursor-pointer" target="_blank"> <!-- link with no text decoration, gray text and default cursor override -->
+      <a href="https://github.com/NerdTech-aut/cdv" class="text-decoration-none text-secondary cursor-pointer" target="_blank"> <!-- link with no text decoration, gray text and default cursor override -->
         <span><i class="bi bi-file-earmark-code"></i> <!-- bootstrap code icon --> GitHub</span>
       </a>
     </div>
@@ -112,11 +112,11 @@
           <div id="filtersCardBody" class="card-body collapse show"> <!-- card body which is collapsable but not collapsed on load -->
             <h5 class="card-title mb-3 d-none d-md-block">Data & Filters</h5>  <!-- title of the card with 1rem margin bottom and only visible for screen-width >= 768px -->
             <div class="mb-3"> <!-- element with 1rem margin bottom -->
-              <label for="csvFile" class="form-label text-secondary small-text text-uppercase">Select CSV</label> <!-- styled label for the CSV file picker button with a lighter text color, smaller text size and uppercase text-->
+              <label for="csvFile" class="form-label text-secondary small-text text-uppercase">Select CSV (CellMapper & G-MoN Pro)</label> <!-- styled label for the CSV file picker button with a lighter text color, smaller text size and uppercase text-->
               <input class="form-control bg-transparent text-secondary border-secondary" type="file" id="csvFile" accept=".csv" autocomplete="off"/> <!-- styled file picker button with a transparent background and light text -->
             </div>
             <div class="mb-3 d-flex justify-content-between align-items-center"> <!-- element with 1rem margin bottom which is a flexbox which pushes the two items inside apart and vertically centers the items -->
-              <a id="btnHelp" class="btn btn-sm btn-outline-info" href="https://github.com/NerdTech-aut/cmcdv?tab=readme-ov-file#faq" target="_blank">Help</a> <!-- link which is styled as a compact outlined info button -->
+              <a id="btnHelp" class="btn btn-sm btn-outline-info" href="https://github.com/NerdTech-aut/cdv?tab=readme-ov-file#faq" target="_blank">Help</a> <!-- link which is styled as a compact outlined info button -->
               <span class="badge badge-pill text-bg-secondary py-2 small-text cursor-default"> <!-- points counter as a badge pill with gray secondary background, 0.5rem margin top and bottom and custom font size as well as a cursor type override to default -->
                 <span id="visibleCount">0</span> / <span id="totalCount">0</span> points
               </span>
@@ -292,7 +292,7 @@
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
         <div class="modal-header navbar-bg py-2">
-          <p class="navbar-brand fw-bold fs-5 navigation-link mb-0 py-1">CM CSV Data Viewer</p>
+          <p class="navbar-brand fw-bold fs-5 navigation-link mb-0 py-1">Cell Data Viewer</p>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -441,19 +441,7 @@
                             <div class="col-12">
                               <div class="text-center px-3 h-100">
                                 <h3>Bildernachweis</h3>
-                                <p>Die folgen Bilder werden im Rahmen der <a href="https://pixabay.com/service/license-summary/" target="_blank">Pixabay Content License</a> verwendet:</p>
-                                <ul class="list-group list-group-flush mb-3">
-                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/optical-fiber-meteor-shower-luminous-7204074/" target="_blank">optical-fiber-7204074</a></li>
-                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/optical-fiber-luminous-line-7204073/" target="_blank">optical-fiber-7204073</a></li>
-                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/luminous-lights-purple-lights-7204068/" target="_blank">luminous-7204068</a></li>
-                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/optical-fiber-meteor-shower-luminous-7204078/" target="_blank">optical-fiber-7204078</a></li>
-                                  <li class="list-group-item border-0"><a href="https://pixabay.com/users/%e9%a5%bf%e7%8b%90%e7%bd%91www_ewhooo_com-112701/" target="_blank">饿狐网www_ewhooo_com</a> - <a href="https://pixabay.com/photos/luminous-lights-bokeh-night-lights-7204052/" target="_blank">luminous-7204052</a></li>
-                                </ul>
-                                <p>Das Favicon wird unter der <a href="https://fontawesome.com/license/free" target="_blank">Font Awesome Free License</a> von Fonticons, Inc. verwendet. In diesem Zusammenhang gilt für SVG Icons, wie sie in diesem Fall verwendet werden, die <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
-                                <ul class="list-group list-group-flush">
-                                  <li class="list-group-item"><a href="https://fontawesome.com/" target="_blank">Fonticons, Inc.</a> - <a href="https://fontawesome.com/icons/circle-nodes?f=classic&s=solid" target="_blank">circle-nodes</a><p>Die SVG Datei wurde dahingehend verändert, dass sich die Füllfarbe automatisch an die Hintergrundfarbe anpasst.</p></li>
-                                </ul>
-                                <p>Weitere Icons sind <a href="https://icons.getbootstrap.com/" target="_blank">Bootstrap Icons</a> vom Bootstrap team und Mitwirkenden unter der <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" target="_blank">MIT License</a>.</p>
+                                <p>Die Icons sind <a href="https://icons.getbootstrap.com/" target="_blank">Bootstrap Icons</a> vom Bootstrap team und Mitwirkenden unter der <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" target="_blank">MIT License</a>.</p>
                               </div>
                             </div>
                           </div>
@@ -477,7 +465,7 @@
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
         <div class="modal-header navbar-bg py-2">
-          <p class="navbar-brand fw-bold fs-5 navigation-link mb-0 py-1">CM CSV Data Viewer</p>
+          <p class="navbar-brand fw-bold fs-5 navigation-link mb-0 py-1">Cell Data Viewer</p>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -514,9 +502,9 @@
                     </div>
                   </div>
 
-                  <div class="accordion-item">
+                  <div class="accordion-item border-0">
                     <h2 class="accordion-header">
-                      <button class="accordion-button shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoPrivacyPolicy" aria-expanded="true" aria-controls="collapseTwoPrivacyPolicy">
+                      <button class="accordion-button bg-white shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoPrivacyPolicy" aria-expanded="true" aria-controls="collapseTwoPrivacyPolicy">
                         Kontakt
                       </button>
                     </h2>
@@ -527,6 +515,14 @@
                             <div class="col-12">
                               <div class="text-center px-3 h-100">
                                 <h3>Kontakt</h3>
+                                <p>Webseitenbetreiber:</p>
+                                <p>Florian Jeschek</p>
+                                <p>Sie erreichen mich unter folgenden Kontaktdaten:</p>
+                                <p>Email:                                    
+                                  <a href="mailto:contact@nerdtech.one" class="text-decoration-none">
+                                    contact@nerdtech.one
+                                  </a>
+                                </p>
                                 <p>Wenn Sie mich per Email kontaktieren, dann werden die von Ihnen an übermittelten Daten zwecks Bearbeitung Ihrer Anfrage oder für den Fall von weiteren Anschlussfragen gespeichert. Es erfolgt, ohne Ihre Einwilligung, keine Weitergabe Ihrer übermittelten Daten.</p>
                                 <p class="mb-0">Rechtstext von Quelle: <a href="https://fairesrecht.at/kostenlos-datenschutzerklaerung-erstellen-generator.php" target="_blank">DSGVO Datenschutz Generator</a> in Kooperation mit <a href="https://kredit123.at/home" target="_blank">Online Kreditvergleich</a></p>
                               </div>
@@ -581,7 +577,7 @@
 
                   <div class="accordion-item">
                     <h2 class="accordion-header">
-                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFourPrivacyPolicy" aria-expanded="false" aria-controls="collapseFourPrivacyPolicy">
+                      <button class="accordion-button bg-white collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFourPrivacyPolicy" aria-expanded="false" aria-controls="collapseFourPrivacyPolicy">
                         jsDelivr CDN
                       </button>
                     </h2>
@@ -599,7 +595,7 @@
                                 <p>Um die Inhalte dieses Internetauftritts schnell ausliefern zu können, greift der Dienst auf sog. JavaScript-Bibliotheken zurück. Dabei werden entsprechende Dateien von einem Drittserver geladen, der Ihre IP-Adresse erfasst. Ich haben dabei keinen Einfluss darauf, ob Ihre IP-Adresse durch Dritte zu statistischen Zwecken verarbeitet wird.</p>
                                 <p>Die Volentio JSD Limited bietet unter <a href="https://www.jsdelivr.com/terms/privacy-policy" rel="nofollow noopener" target="_blank">https://www.jsdelivr.com/terms/privacy-policy</a> weitergehende Datenschutzinformationen an.</p>
                                 <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f) DSGVO. Das berechtigte Interesse liegt in der Beschleunigung der Ladezeiten des Internetauftritts sowie in dessen Optimierung.</p>
-                                <p>Um die Ausführung des Java-Script-Codes von jsdeliver.net insgesamt zu verhindern, können Sie einen sog. Java-Script-Blocker installieren, wie bspw. noscript.net oder ghostery.com. Sollten Sie die Ausführung des Java-Script-Codes verhindern oder einschränken, kann dies aus technischen Gründen allerdings dazu führen, dass womöglich nicht sämtliche Inhalte und Funktionen unseres Internetauftritts verfügbar sind.</p>
+                                <p>Um die Ausführung des Java-Script-Codes von jsdeliver.net insgesamt zu verhindern, können Sie einen sog. Java-Script-Blocker installieren, wie bspw. <a href="https://noscript.ne" target="_blank">noscript.net</a> oder <a href="https://www.ghostery.com/">ghostery.com</a>. Sollten Sie die Ausführung des Java-Script-Codes verhindern oder einschränken, kann dies aus technischen Gründen allerdings dazu führen, dass womöglich nicht sämtliche Inhalte und Funktionen dieses Internetauftritts verfügbar sind.</p>
                                 <p class="mb-0">Rechtstext von Quelle: <a href="https://www.generator-datenschutzerklärung.de" target="_blank">Muster-Datenschutzerklärung</a> der <a href="https://www.bewertung-löschen24.de" target="_blank">Anwaltskanzlei Weiß &amp; Partner</a></p>
                               </div>
                             </div>
@@ -643,14 +639,14 @@
                     </div>
                   </div>
 
-                  <div class="accordion-item">
+                  <div class="accordion-item border-0 rounded-bottom-4">
                     <h2 class="accordion-header">
-                      <button class="accordion-button collapsed shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFivePrivacyPolicy" aria-expanded="false" aria-controls="collapseFivePrivacyPolicy">
+                      <button class="accordion-button bg-white collapsed rounded-bottom-4 shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFivePrivacyPolicy" aria-expanded="false" aria-controls="collapseFivePrivacyPolicy">
                         Ihre Rechte als Betroffener
                       </button>
                     </h2>
                     <div id="collapseFivePrivacyPolicy" class="accordion-collapse collapse" data-bs-parent="#privacyPolicyAccordion">
-                      <div class="accordion-body border-bottom border-secondary px-3">
+                      <div class="accordion-body border-bottom border-secondary px-3 rounded-bottom-4">
                         <div class="container-fluid px-0">
                           <div class="row g-3">
                             <div class="col-12">
@@ -666,37 +662,6 @@
                                   <li class="list-group-item border-0">Einschränkung</li>
                                 </ul>
                                 <p>Wenn sie vermuten, dass im Zuge der Verarbeitung Ihrer Daten Verstöße gegen das Datenschutzrecht passiert sind, so haben Sie die Möglichkeit sich bei <a href="mailto:contact@nerdtech.one">contact@nerdtech.one</a> oder der Datenschutzbehörde zu beschweren.</p>
-                                <p class="mb-0">Rechtstext von Quelle: <a href="https://fairesrecht.at/kostenlos-datenschutzerklaerung-erstellen-generator.php" target="_blank">DSGVO Datenschutz Generator</a> in Kooperation mit <a href="https://kredit123.at/home" target="_blank">Online Kreditvergleich</a></p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="accordion-item rounded-bottom-4">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed rounded-bottom-4 shadow-none border-bottom border-secondary fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                        Sie erreichen mich unter folgenden Kontaktdaten:
-
-                      </button>
-                    </h2>
-                    <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#privacyPolicyAccordion">
-                      <div class="accordion-body border-bottom border-secondary px-3 rounded-bottom-4">
-                        <div class="container-fluid px-0">
-                          <div class="row g-3">
-                            <div class="col-12">
-                              <div class="text-center px-3 h-100">
-                                <h3>Sie erreichen mich unter folgenden Kontaktdaten:</h3>
-                                <ul class="list-group list-group-flush">
-                                  <li class="list-group-item border-0">Webseitenbetreiber: Florian Jeschek</li>
-                                  <li class="list-group-item border-0">Email: 
-                                    <a href="mailto:contact@nerdtech.one" class="text-decoration-none">
-                                      contact@nerdtech.one
-                                    </a>
-                                  </li>
-                                </ul>
                                 <p class="mb-0">Rechtstext von Quelle: <a href="https://fairesrecht.at/kostenlos-datenschutzerklaerung-erstellen-generator.php" target="_blank">DSGVO Datenschutz Generator</a> in Kooperation mit <a href="https://kredit123.at/home" target="_blank">Online Kreditvergleich</a></p>
                               </div>
                             </div>
@@ -762,9 +727,11 @@
     const successfulMapModelText = document.getElementById('successfulMapModelText')
     const successfulMapModel = new bootstrap.Modal(document.getElementById('successfulMapModel'));
 
-    const headers = ['Latitude', 'Longitude', 'Altitude', 'MCC', 'MNC', 'LAC', 'Cell', 'Signal', 'Type', 'Subtype', 'ARFCN', 'PCI'];
+    const headersCM = ['Latitude', 'Longitude', 'Altitude', 'MCC', 'MNC', 'LAC', 'Cell', 'Signal', 'Type', 'Subtype', 'ARFCN', 'PCI'];
+    const headersGMP = ['PLMN', 'SYSTEM', 'XCI', 'xNBID', 'LOCAL_CID', 'LAC/TAC', 'PCI/PSC/BSIC', 'ARFCN', 'BAND', 'RSSI', 'RSRP/RSCP', 'RSRQ/ECIO', 'SNR', 'CQI', 'TA', 'DISTANCE', 'DELTA_AZI', 'LAT', 'LON', 'SPEED', 'GPS_ACCURACY', 'UL', 'DL', 'BANDWIDTH', 'BANDWIDTHS', 'CA', 'NR_STATE', 'NARFCN', 'NR_BAND', 'NR_PCI', 'NR_SS_RSRP', 'NR_SS_RSRQ', 'NR_SS_SINR', 'NR_CSI_RSRP', 'NR_CSI_RSRQ', 'NR_CSI_SINR', 'CLF_LABEL', 'CLF_LOC', 'CLF_DESC', 'DATE', 'TIME', 'ROAMING']
+    const headersGMPOptimized = ['PLMN', 'SYSTEM', 'Cell', 'NB', 'LOCAL_CID', 'LAC', 'PCI', 'ARFCN', 'Band', 'RSSI', 'Signal', 'RSRQ', 'SNR', 'CQI', 'TA', 'DISTANCE', 'DELTA_AZI', 'Latitude', 'Longitude', 'SPEED', 'GPS_ACCURACY', 'UL', 'DL', 'BANDWIDTH', 'BANDWIDTHS', 'CA', 'NR_STATE', 'NARFCN', 'NR_BAND', 'NR_PCI', 'NR_SS_RSRP', 'NR_SS_RSRQ', 'NR_SS_SINR', 'NR_CSI_RSRP', 'NR_CSI_RSRQ', 'NR_CSI_SINR', 'CLF_LABEL', 'CLF_LOC', 'CLF_DESC', 'DATE', 'TIME', 'ROAMING']
     const mapping = { 'LTE-LTE': 256, 'NR-NSA': 0, 'NR-SA': 16384 };
-    const invalidValues = ["-1", "0", "1", "", "9223372036854775807"];
+    const invalidValues = ["-1", "0", "1", "", "9223372036854775807", "000000"];
 
     let map;
     let markerLayer = L.layerGroup();
@@ -895,60 +862,115 @@
       const lines = text.split("\n").filter(l => l.trim().length > 0);
       console.log(`${lines.length} rows in CSV`)
 
-      //iterate over all the lines
-      lines.forEach(line => {
-        //split the line at the separator
-        const cols = line.split(",");
-        //when the line does not have the expected amount of columns skip the rest of the run
-        if (cols.length !== headers.length) return;
+      if (lines.length == 0) return;
 
-        //construct the row as a dictionary/json
-        const row = {};
+      if (lines[0].split(",").length == headersCM.length) {
+        //iterate over all the lines
+        lines.forEach(line => {
+          //split the line at the separator
+          const cols = line.split(",");
+          //when the line does not have the expected amount of columns skip the rest of the run
+          if (cols.length !== headersCM.length) return;
 
-        //iterate over the headers and set a new key value pair for the current header and the column value at the current header index
-        headers.forEach((h, idx) => {
-          row[h] = cols[idx]
+          //construct the row as a dictionary/json
+          const row = {};
+
+          //iterate over the headers and set a new key value pair for the current header and the column value at the current header index
+          headersCM.forEach((h, idx) => {
+            row[h] = cols[idx]
+          });
+
+          //update the Latitude row by converting it into a float
+          row.Latitude = parseFloat(row.Latitude)
+          //update the Longitude row by converting it into a float
+          row.Longitude = parseFloat(row.Longitude)
+          //when the latitude or longitude value is not a number then skip the rest of the run
+          if (isNaN(row.Latitude) || isNaN(row.Longitude)) return;
+
+          //create new PLMN entry based von MCC and MNC when these values are not invalid
+          row.PLMN = (!invalidValues.includes(row.MCC) || !invalidValues.includes(row.MNC)) ? `${row.MCC}-${row.MNC}` : "Unknown";
+          
+          //create new TypeSubtype entry based in Type and Subtype when these values are not invalid
+          row.TypeSubtype = (!invalidValues.includes(row.Type) || !invalidValues.includes(row.Subtype)) ? `${row.Type}-${row.Subtype}` : "Unknown";
+          //skip the rest of the run if type is not LTE or NR
+          if (row.TypeSubtype.includes(["LTE", "NR"])) return;
+          
+          //update LAC entry if value is invalid
+          row.LAC = (!invalidValues.includes(row.LAC)) ? row.LAC : "Unknown";
+          //update Cell entry if value is invalid
+          row.Cell = (!invalidValues.includes(row.Cell)) ? row.Cell : "Unknown";
+          //update PCI entry if value is invalid
+          row.PCI = (!invalidValues.includes(row.PCI)) ? row.PCI : "Unknown";
+          //update ARFCN entry if value is invalid
+          row.ARFCN = (!invalidValues.includes(row.ARFCN)) ? row.ARFCN : "Unknown";
+
+          //get the divisor for the calculation of the NB based on TypeSubtype
+          const divisor = mapping[row.TypeSubtype] ?? 1;
+          //create a new NB entry by first convert and check if the Cell-ID is a finite number and then calculate the NB by converting the Cell-ID to a number, divide it by the divisor, and turning it into a while number
+          row.NB = Number.isFinite(Number(row.Cell)) && divisor !== 0 ? String(Math.trunc(Number(row.Cell) / divisor)) : "Unknown";
+
+          //create a new Band entry with the getBandNumber function
+          row.Band = getBandNumber(row.ARFCN, row.Type);
+          //create a new Frequency entry with the calculateFrequency function 
+          row.Frequency = calculateFrequency(row.ARFCN, row.Type);
+          //create a new Color entry with the determineMarkerColor function
+          row.Color = determineMarkerColor(row.Signal);
+
+          //add the finished row dict/json to the rows list
+          rows.push(row);
         });
+      } else if (lines[0].split(";").length == headersGMP.length && lines[0].split(";").every(h => headersGMP.includes(h))) {
+        //iterate over all the lines
+        lines.slice(1).forEach(line => {
+          //split the line at the separator
+          const cols = line.split(";");
+          //when the line does not have the expected amount of columns skip the rest of the run
+          if (cols.length !== headersGMP.length) return;
 
-        //update the Latitude row by converting it into a float
-        row.Latitude = parseFloat(row.Latitude)
-        //update the Longitude row by converting it into a float
-        row.Longitude = parseFloat(row.Longitude)
-        //when the latitude or longitude value is not a number then skip the rest of the run
-        if (isNaN(row.Latitude) || isNaN(row.Longitude)) return;
+          //construct the row as a dictionary/json
+          const row = {};
 
-        //create new PLMN entry based von MCC and MNC when these values are not invalid
-        row.PLMN = (!invalidValues.includes(row.MCC) || !invalidValues.includes(row.MNC)) ? `${row.MCC}-${row.MNC}` : "Unknown";
-        
-        //create new TypeSubtype entry based in Type and Subtype when these values are not invalid
-        row.TypeSubtype = (!invalidValues.includes(row.Type) || !invalidValues.includes(row.Subtype)) ? `${row.Type}-${row.Subtype}` : "Unknown";
-        //skip the rest of the run if type is not LTE or NR
-        if (row.TypeSubtype.includes(["LTE", "NR"])) return;
-        
-        //update LAC entry if value is invalid
-        row.LAC = (!invalidValues.includes(row.LAC)) ? row.LAC : "Unknown";
-        //update Cell entry if value is invalid
-        row.Cell = (!invalidValues.includes(row.Cell)) ? row.Cell : "Unknown";
-        //update PCI entry if value is invalid
-        row.PCI = (!invalidValues.includes(row.PCI)) ? row.PCI : "Unknown";
-        //update ARFCN entry if value is invalid
-        row.ARFCN = (!invalidValues.includes(row.ARFCN)) ? row.ARFCN : "Unknown";
+          //iterate over the headers and set a new key value pair for the current header and the column value at the current header index
+          headersGMPOptimized.forEach((h, idx) => {
+            row[h] = cols[idx]
+          });
+          
+          if (invalidValues.includes(row.Signal)) return;
 
-        //get the divisor for the calculation of the NB based on TypeSubtype
-        const divisor = mapping[row.TypeSubtype] ?? 1;
-        //create a new NB entry by first convert and check if the Cell-ID is a finite number and then calculate the NB by converting the Cell-ID to a number, divide it by the divisor, and turning it into a while number
-        row.NB = Number.isFinite(Number(row.Cell)) && divisor !== 0 ? String(Math.trunc(Number(row.Cell) / divisor)) : "Unknown";
+          if (row.Latitude == "48.257915" && row.Longitude == "16.337943") console.log(row);
 
-        //create a new Band entry with the getBandNumber function
-        row.Band = getBandNumber(row.ARFCN, row.Type);
-        //create a new Frequency entry with the calculateFrequency function 
-        row.Frequency = calculateFrequency(row.ARFCN, row.Type);
-        //create a new Color entry with the determineMarkerColor function
-        row.Color = determineMarkerColor(row.Signal);
+          //update PLMN entry if value is invalid
+          row.PLMN = (!invalidValues.includes(row.PLMN)) ? row.PLMN : "Unknown";
+          //update LAC entry if value is invalid
+          row.LAC = (!invalidValues.includes(row.LAC)) ? row.LAC : "Unknown";
+          //update Cell entry if value is invalid
+          row.Cell = (!invalidValues.includes(row.Cell)) ? row.Cell : "Unknown";
+          //update PCI entry if value is invalid
+          row.PCI = (!invalidValues.includes(row.PCI)) ? row.PCI : "Unknown";
+          //update NB entry if value is invalid
+          row.NB = (!invalidValues.includes(row.NB)) ? row.NB : "Unknown";
+          //update ARFCN entry if value is invalid
+          row.ARFCN = (!invalidValues.includes(row.ARFCN)) ? row.ARFCN : "Unknown";
+          //update PCI entry if value is invalid
+          row.PCI = (!invalidValues.includes(row.PCI)) ? row.PCI : "Unknown";
+          //update Altitude entry if value is invalid
+          row.Altitude = (!invalidValues.includes(row.Altitude)) ? row.Altitude : "Unknown";
 
-        //add the finished row dict/json to the rows list
-        rows.push(row);
-      });
+          //create a new type entry based on the System entry
+          row.Type = row.SYSTEM === "4" ? "LTE" : row.SYSTEM === "5" ? "NR" : "Unknown";
+          row.TypeSubtype = row.SYSTEM === "4" ? `${row.Type}-LTE` : row.SYSTEM === "5" ? `${row.Type}-SA` : "Unknown";
+
+          row.Band = row.Band.split(" ")[1] ?? "Unknown";
+
+          //create a new Frequency entry with the calculateFrequency function 
+          row.Frequency = calculateFrequency(row.ARFCN, row.Type);
+          //create a new Color entry with the determineMarkerColor function
+          row.Color = determineMarkerColor(row.Signal);
+
+          //add the finished row dict/json to the rows list
+          rows.push(row);
+        });
+      }
 
       console.log(`Parsed ${rows.length} rows from CSV`);
       return rows;
@@ -1384,7 +1406,7 @@
             <th scope="row">Signal</th>    <td>${p.Signal} dBm</td>
           </tr>
           <tr>
-            <th scope="row">Altitude</th>  <td>${p.Altitude} meters</td>
+            <th scope="row">${p.Altitude ? "Altitude" : p.GPS_ACCURACY ? "Accuracy": ""}</th>  <td>${p.Altitude ? p.Altitude: p.GPS_ACCURACY ? "+/- " + p.GPS_ACCURACY : ""} meters</td>
           </tr>
           <tr>
             <th scope="row">Latitude</th>  <td>${p.Latitude}</td>
