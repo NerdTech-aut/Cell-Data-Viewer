@@ -8,15 +8,15 @@ It is currently available at: [https://cdv.nerdtech.one](https://cdv.nerdtech.on
 
 This web tool lets you view, filter and export the data points you have collected with the CellMapper and G-MoN Pro applications on your Android device.
 
-### Visualization
-You can visualize the data points that you have collected with the CellMapper and G-MoN Pro applications on a map. You can see each collected data point in detail with information rich tooltips and popups.
-
-![Cell Data Viewer popup screenshot](/assets/documentation/imgs/Screenshot-Popup.png)
-
 ### Filters
 You can filter hundreds or thousands of data points to be able to focus only on what you actually care about. Available filters include PLMN, network type (LTE and NR), Band, ARFCN, (e/g)NodeB (site ID) and cell ID. You can apply filters at once or only a few depending on what you want. Additionally, you can search the filter options to quickly find what you are looking for.
 
 ![Cell Data Viewer filters screenshot](/assets/documentation/imgs/Screenshot-Filters.png)
+
+### Visualization
+You can visualize the data points that you have collected with the CellMapper and G-MoN Pro applications on a map. You can see each collected data point in detail with information rich tooltips and popups.
+
+![Cell Data Viewer popup screenshot](/assets/documentation/imgs/Screenshot-Popup.png)
 
 ### Export
 You like what you see on the map. Then you can go ahead and export the map as an HTML file to preserve the currently displayed data points to look at them again later or for sharing with others.
