@@ -19,12 +19,12 @@ You can filter hundreds or thousands of data points to be able to focus only on 
 ![Cell Data Viewer filters screenshot](/assets/documentation/imgs/Screenshot-Filters.png)
 
 ### Export
-You like what you see on the map. Then you can go ahead and export the map as an HTML file to preserve the currently displayed data points to look at them again later or for sharing with others. 
+You like what you see on the map. Then you can go ahead and export the map as an HTML file to preserve the currently displayed data points to look at them again later or for sharing with others.
+
+![Cell Data Viewer export screenshot](/assets/documentation/imgs/Screenshot-Export.png)
 
 ### Local in browser processing
 All processing of the data happens on your device in the browser. The CSV files you select to view, filter and export are not uploaded to any server. The location permission is optional and only used to center the map based on your location. Your location is not shared with anyone!
-
-![Cell Data Viewer export screenshot](/assets/documentation/imgs/Screenshot-Export.png)
 
 ## FAQ
 ### I use CellMapper - How can I save the points I collect to a CSV file?
@@ -83,6 +83,10 @@ If you have trouble finding that folder again follow these steps to rediscover t
 4. Under general select the "Change storage location" option.
 5. In the pop-up select the "Proceed" option.
 6. You can now see the selected folder and the path to that folder in the folder picker.
+
+### What are the optimal settings for recording data points with CellMapper?
+My suggestion for the optimal settings for recording data points with CellMapper are:
+In the settings of the CellMapper app, in the "Advanced Settings" section, set the "Minimum Recording Interval" to 1 second
 
 ![TC Folder Rediscover](/assets/documentation/imgs/TC-Folder-Rediscover.png)
 
