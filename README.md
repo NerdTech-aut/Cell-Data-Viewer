@@ -1,15 +1,15 @@
 # Cell Data Viewer
 ## About
-This web tool allows anyone to make more out of the CSV files collected by the CellMapper and G-MoN Pro applications.
+This web tool allows anyone to make more out of the CSV files collected by the CellMapper, G-MoN Pro and Tower Collector applications.
 
 It is currently available at: [https://cdv.nerdtech.one](https://cdv.nerdtech.one)
 
 ![Cell Data Viewer main screenshot](/assets/documentation/imgs/Screenshot-Main.png)
 
-This web tool lets you view, filter and export the data points you have collected with the CellMapper and G-MoN Pro applications on your Android device.
+This web tool lets you view, filter and export the data points you have collected with the CellMapper, G-MoN Pro and Tower Collector applications on your Android device.
 
 ### Filters
-You can filter hundreds or thousands of data points to be able to focus only on what you actually care about. Available filters include PLMN, network type (LTE and NR), Band, ARFCN, (e/g)NodeB (site ID) and cell ID. You can apply filters at once or only a few depending on what you want. Additionally, you can search the filter options to quickly find what you are looking for.
+You can filter hundreds or thousands of data points to be able to focus only on what you actually care about. Available filters include PLMN, network type (LTE and NR), Band, Frequency, (e/g)NodeB (site ID) and cell ID. You can apply filters at once or only a few depending on what you want. Additionally, you can search the filter options to quickly find what you are looking for.
 
 ![Cell Data Viewer filters screenshot](/assets/documentation/imgs/Screenshot-Filters.png)
 
