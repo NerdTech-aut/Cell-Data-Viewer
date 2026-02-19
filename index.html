@@ -62,6 +62,10 @@
       .leaflet-tooltip {
         display: none !important;
       }
+
+      #configCard {
+        height: auto !important;
+      }
     }
 
     .legend-color-block {
@@ -126,7 +130,7 @@
             <h5 class="card-title mb-3 d-none d-md-block">Data & Filters</h5>  <!-- title of the card with 1rem margin bottom and only visible for screen-width >= 768px -->
             <div class="mb-3"> <!-- element with 1rem margin bottom -->
               <label for="csvFile" class="form-label text-secondary small-text text-uppercase">Select CSV <a href="#" data-bs-toggle="tooltip" data-bs-title="Supported sources are CellMapper, G-MoN Pro & Tower Collector - see help for details" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" aria-label="Information about CSV file sources"><i class="bi bi-info-circle"></i></a></label> <!-- styled label for the CSV file picker button with a lighter text color, smaller text size and uppercase text-->
-              <input class="form-control bg-transparent text-secondary border-secondary" type="file" id="csvFile" accept=".csv" autocomplete="off"/> <!-- styled file picker button with a transparent background and light text -->
+              <input class="form-control bg-transparent text-secondary border-secondary" type="file" id="csvFile" accept=".csv" autocomplete="off" multiple/> <!-- styled file picker button with a transparent background and light text -->
             </div>
             <div class="mb-3 d-flex justify-content-between align-items-center"> <!-- element with 1rem margin bottom which is a flexbox which pushes the two items inside apart and vertically centers the items -->
               <a id="btnHelp" class="btn btn-sm btn-outline-info" href="https://github.com/NerdTech-aut/Cell-Data-Viewer/wiki" target="_blank">Help</a> <!-- link which is styled as a compact outlined info button -->
@@ -794,7 +798,7 @@
     };
 
     let lastIsDesktop = window.innerWidth >= 768;
-    let fileName = "No file selected";
+    let previousFiles = [];
     
     let eutraBands = [];
     let nrBands = [];
@@ -958,6 +962,8 @@
           row.Frequency = calculateFrequency(row.ARFCN, row.Type);
           //create a new Color entry with the determineMarkerColor function
           row.Color = determineMarkerColor(row.Signal);
+          //create a new Source entry
+          row.Source = "CellMapper";
 
           //add the finished row dict/json to the rows list
           rows.push(row);
@@ -982,7 +988,7 @@
           if (invalidValues.includes(row.Signal)) return;
 
           //update PLMN entry if value is invalid
-          row.PLMN = (!invalidValues.includes(row.PLMN)) ? row.PLMN.substring(0, 3) + "-" + row.PLMN.substring(3) : "Unknown";
+          row.PLMN = (!invalidValues.includes(row.PLMN)) ? row.PLMN.substring(0, 3) + "-" + Number(row.PLMN.substring(3)).toString() : "Unknown";
           //update LAC entry if value is invalid
           row.LAC = (!invalidValues.includes(row.LAC)) ? row.LAC : "Unknown";
           //update Cell entry if value is invalid
@@ -1010,8 +1016,8 @@
           //skip the rest of the run if type is not LTE or NR
           if (row.TypeSubtype.includes(["LTE", "NR"])) return;
 
-          //update the Band entry by removing the leading frequency number
-          row.Band = row.Band.split(" ")[1] ?? "Unknown";
+          //update the Band entry by replacing it with the calculated band number based on the ARFCN and Type
+          row.Band = getBandNumber(row.ARFCN, row.Type);
 
           //create a new Frequency entry with the calculateFrequency function 
           row.Frequency = calculateFrequency(row.ARFCN, row.Type);
@@ -1020,6 +1026,8 @@
 
           //create a new Timestamp entry by combining the Date and Time entries
           row.Timestamp = `${row.DATE} ${row.TIME}`
+          //create a new Source entry
+          row.Source = "G-MoN Pro";
 
           //add the finished row dict/json to the rows list
           rows.push(row);
@@ -1070,6 +1078,8 @@
           
           //update the Timestamp entry by aligning format with that of G-MoN Pro
           row.Timestamp = row.Timestamp.replace("T", " ").replace("Z", "").replaceAll("-", "/").replaceAll("\"", "");
+          //create a new Source entry
+          row.Source = "Tower Collector";
 
           //add the finished row dict/json to the rows list
           rows.push(row);
@@ -1292,8 +1302,6 @@
       const allEntry = ul.querySelector('a.dropdown-item[data-value=""]');
       //get the no result entry
       const noResultEntry = allEntry.parentElement.nextSibling;
-
-      console.log(`Rendering dropdown ${idBase} with ${sortedFilters.length} entries`);
       
       //iterate over the sortedFilters list
       sortedFilters.forEach(sortedFilter => {
@@ -1463,6 +1471,9 @@
             <th scope="row">Timestamp</th> <td>${p.Timestamp}</td>
           </tr>` : ""}
           <tr>
+            <th scope="row">Source</th>    <td>${p.Source}</td>
+          </tr>
+          <tr>
             <th colspan="2"><a href="https://www.google.com/maps/search/${p.Latitude},+${p.Longitude}" target="_blank">View on Google Maps</a></th>
           </tr>
           <tr>
@@ -1590,7 +1601,7 @@
         }
         
         //create the filename suggestion by replacing the .csv extension with .html and a hint that it is a map
-        const suggestedFileName = fileName.replace('.csv', `${Object.entries(currentFilters).map(([k, v]) => (`${v ? '_' + v : ''}`)).join('')}_map.html`);
+        const suggestedFileName = previousFiles[0].name.replace('.csv', `${Object.entries(currentFilters).map(([k, v]) => (`${v ? '_' + v : ''}`)).join('')}_map.html`);
         //create the content for the file by replacing the placeholders in the template file with json stringified versions of the markers and latLngs lists
         const content = mapTemplate.replace("filteredDataJSON = []", `filteredDataJSON = ${JSON.stringify(markers)}`).replace("latLngs = []", `latLngs = ${JSON.stringify(latLngs)}`);
 
@@ -1646,33 +1657,35 @@
     });
 
     //csv uploader function
-    csvFile.addEventListener("change", event => {
+    csvFile.addEventListener("change", async event => {
       //get the new file
-      const file = event.target.files[0];
+      const files = Array.from(event.target.files);
       //when the new file is empty but there was another file selected previously
-      if (file == null && fileName != "No file selected") {
-        //recreate the previously selected file
-        const previousFile = new File(allPoints, fileName, {
-          type: 'text/csv',
-          lastModified: Date.now(),
-        });
-        //create a new data transfer and add the recreated previous File
+      if ((files == null || files.length === 0) && previousFiles.length !== 0) {
+        //create a new dataTransfer 
         const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(previousFile);
+        //recreate the previously selected files
+        for (const previousFile of previousFiles) {
+          //add the recreated previous File to the dataTransfer object
+          dataTransfer.items.add(previousFile);
+        }
         //assign the files in the dataTransfer object to the file-input element which overrides that there is no file selected
         csvFile.files = dataTransfer.files;
       }
-      //get the filename but if now no file was selected and there was previously a file keep the filename of the previously selected file
-      fileName = (file != null) ? file.name : (fileName != "No file selected" ? fileName : "No file selected");
-      console.log(`Selected file: ${fileName}`);
+      //get the filenames but if now no files were selected and there previously were one or more files selected keep the filenames of the previously selected files
+      previousFiles = (files.length > 0) ? files : (previousFiles.length > 0 ? previousFiles : []);
+      console.log(`Selected files: ${previousFiles.map(f => f.name)}`);
       //skip the rest of the function when no new file was selected
-      if (!file) return;
+      if (!files || files.length === 0) return;
 
-      const reader = new FileReader();
-      //create custom function on how the reading of the file is done
-      reader.onload = e => {
-        //get the result from the reading and use custom parseCsv function to parse the file then save the result in the allPoints variable
-        allPoints = parseCsv(e.target.result);
+      allPoints = [];
+      
+      try {
+        //read the content of all selected files in parallel with the readFileContent function which returns a promise and wait until all files are read
+        await Promise.all(files.map(readFileContent));
+        
+        console.log("All files finished reading");
+
         //update the total points counter
         totalCount.textContent = allPoints.length;
 
@@ -1687,10 +1700,32 @@
           mobileHeader.click();
           lastIsDesktop = false;
         }
-      };
-      //read the file
-      reader.readAsText(file);
+      } catch (error) {
+        console.error("Error reading files:", error);
+      }
     });
+
+    function readFileContent(file) {
+      return new Promise((resolve, reject) => {
+        //create a new FileReader object to read the content of the current file
+        const reader = new FileReader();
+        //define the onload event handler for the FileReader to process the file content once it is read
+        reader.onload = e => {        
+          //resole the promise
+          resolve(
+          //get the content of the file, use the custom parseCsv function to parse the file and add the result to the allPoints variable
+          allPoints.push(...parseCsv(e.target.result))
+         );
+        };
+
+        reader.onerror = (error) => {
+          reject(error);
+        };
+        
+        //start reading the file as text which triggers the onload event once the content is read
+        reader.readAsText(file);
+      });
+    }
 
     //function to clear all filters on button click
     btnClearFilters.addEventListener("click", () => {
@@ -1779,7 +1814,6 @@
         lastIsDesktop = isDesktop;
         //when width is 768px or above
         if (isDesktop) {
-          console.log(window.innerWidth)
           //show the card body
           cardBody.classList.add("show")
         //when width is below 768px
