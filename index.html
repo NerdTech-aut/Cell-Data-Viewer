@@ -771,6 +771,7 @@
 
     const dropdowns = document.querySelectorAll('.dropdown');
 
+    const mapEl = document.getElementById('map');
     const emptyMapModel = new bootstrap.Modal(document.getElementById('emptyMapModel'));
     const successfulMapModelText = document.getElementById('successfulMapModelText')
     const successfulMapModel = new bootstrap.Modal(document.getElementById('successfulMapModel'));
@@ -1788,6 +1789,13 @@
 
     csvTooltip.addEventListener('click', function (event) {
       event.preventDefault();
+    });
+
+    mapEl.addEventListener('click', () => {
+      if (cardBody.classList.contains('show')) {
+        //collapse the card body programmatically
+        mobileHeader.click();
+      }
     });
 
     function updateTheme(newTheme, isLight, isDark) {
