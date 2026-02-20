@@ -126,157 +126,159 @@
               <i class="bi bi-chevron-up" id="collapseIcon"></i> <!-- bootstrap icons down arrow -->
             </h5>
           </div>
-          <div id="filtersCardBody" class="card-body collapse show"> <!-- card body which is collapsable but not collapsed on load -->
-            <h5 class="card-title mb-3 d-none d-md-block">Data & Filters</h5>  <!-- title of the card with 1rem margin bottom and only visible for screen-width >= 768px -->
-            <div class="mb-3"> <!-- element with 1rem margin bottom -->
-              <label for="csvFile" class="form-label text-secondary small-text text-uppercase">Select CSV <a href="#" data-bs-toggle="tooltip" data-bs-title="Supported sources are CellMapper, G-MoN Pro & Tower Collector - see help for details" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" aria-label="Information about CSV file sources"><i class="bi bi-info-circle"></i></a></label> <!-- styled label for the CSV file picker button with a lighter text color, smaller text size and uppercase text-->
-              <input class="form-control bg-transparent text-secondary border-secondary" type="file" id="csvFile" accept=".csv" autocomplete="off" multiple/> <!-- styled file picker button with a transparent background and light text -->
-            </div>
-            <div class="mb-3 d-flex justify-content-between align-items-center"> <!-- element with 1rem margin bottom which is a flexbox which pushes the two items inside apart and vertically centers the items -->
-              <a id="btnHelp" class="btn btn-sm btn-outline-info" href="https://github.com/NerdTech-aut/Cell-Data-Viewer/wiki" target="_blank">Help</a> <!-- link which is styled as a compact outlined info button -->
-              <span class="badge badge-pill text-bg-secondary py-2 small-text cursor-default"> <!-- points counter as a badge pill with gray secondary background, 0.5rem margin top and bottom and custom font size as well as a cursor type override to default -->
-                <span id="visibleCount">0</span> / <span id="totalCount">0</span> points
-              </span>
-            </div>
-            <div class="row g-2 mb-3"> <!-- row with a gutter between columns of 0.75rem and 1rem margin bottom -->
-              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
-                <label class="form-label text-secondary small-text text-uppercase">PLMN</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
-                <div class="dropdown" id="filterPlmn"> <!-- styled dropdown -->
-                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterPlmnBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterPlmnSelected">All</span> <!-- default button text -->
-                  </button>
-                  <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
-                    <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
-                      <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
-                        <input type="text" class="form-control form-control-sm border-secondary" id="filterPlmnSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
-                      </li>
-                    </ul>
-                    <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterPlmnUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
-                      <li>
-                        <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
-                      </li>
-                      <li id="filterPlmnNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
-                    </ul>
+          <div id="filtersCardBody" class="card-body collapse show p-0"> <!-- card body which is collapsable but not collapsed on load -->
+            <div class="p-3">
+              <h5 class="card-title mb-3 d-none d-md-block">Data & Filters</h5>  <!-- title of the card with 1rem margin bottom and only visible for screen-width >= 768px -->
+              <div class="mb-3"> <!-- element with 1rem margin bottom -->
+                <label for="csvFile" class="form-label text-secondary small-text text-uppercase">Select CSV <a id="csvTooltip" href="" data-bs-toggle="tooltip" data-bs-title="Supported sources are CellMapper, G-MoN Pro & Tower Collector - see help for details" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" aria-label="Information about CSV file sources"><i class="bi bi-info-circle"></i></a></label> <!-- styled label for the CSV file picker button with a lighter text color, smaller text size and uppercase text-->
+                <input class="form-control bg-transparent text-secondary border-secondary" type="file" id="csvFile" accept=".csv" autocomplete="off" multiple/> <!-- styled file picker button with a transparent background and light text -->
+              </div>
+              <div class="mb-3 d-flex justify-content-between align-items-center"> <!-- element with 1rem margin bottom which is a flexbox which pushes the two items inside apart and vertically centers the items -->
+                <a id="btnHelp" class="btn btn-sm btn-outline-info" href="https://github.com/NerdTech-aut/Cell-Data-Viewer/wiki" target="_blank">Help</a> <!-- link which is styled as a compact outlined info button -->
+                <span class="badge badge-pill text-bg-secondary py-2 small-text cursor-default"> <!-- points counter as a badge pill with gray secondary background, 0.5rem margin top and bottom and custom font size as well as a cursor type override to default -->
+                  <span id="visibleCount">0</span> / <span id="totalCount">0</span> points
+                </span>
+              </div>
+              <div class="row g-2 mb-3"> <!-- row with a gutter between columns of 0.75rem and 1rem margin bottom -->
+                <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                  <label class="form-label text-secondary small-text text-uppercase">PLMN</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                  <div class="dropdown" id="filterPlmn"> <!-- styled dropdown -->
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterPlmnBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                      <span id="filterPlmnSelected">All</span> <!-- default button text -->
+                    </button>
+                    <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
+                      <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
+                        <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
+                          <input type="text" class="form-control form-control-sm border-secondary" id="filterPlmnSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                        </li>
+                      </ul>
+                      <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterPlmnUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
+                        <li>
+                          <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                        </li>
+                        <li id="filterPlmnNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                  <label class="form-label text-secondary small-text text-uppercase">Type</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                  <div class="dropdown" id="filterType"> <!-- styled dropdown -->
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterTypeBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                      <span id="filterTypeSelected">All</span> <!-- default button text -->
+                    </button>
+                    <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
+                      <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
+                        <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
+                          <input type="text" class="form-control form-control-sm border-secondary" id="filterTypeSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                        </li>
+                      </ul>
+                      <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterTypeUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
+                        <li>
+                          <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                        </li>
+                        <li id="filterTypeNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
-                <label class="form-label text-secondary small-text text-uppercase">Type</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
-                <div class="dropdown" id="filterType"> <!-- styled dropdown -->
-                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterTypeBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterTypeSelected">All</span> <!-- default button text -->
-                  </button>
-                  <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
-                    <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
-                      <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
-                        <input type="text" class="form-control form-control-sm border-secondary" id="filterTypeSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
-                      </li>
-                    </ul>
-                    <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterTypeUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
-                      <li>
-                        <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
-                      </li>
-                      <li id="filterTypeNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
-                    </ul>
+              <div class="row g-2 mb-3"> <!-- row with a gutter between columns of 0.75rem and 1rem margin bottom -->
+                <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                  <label class="form-label text-secondary small-text text-uppercase">Band</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                  <div class="dropdown" id="filterBand"> <!-- styled dropdown -->
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterBandBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                      <span id="filterBandSelected">All</span> <!-- default button text -->
+                    </button>
+                    <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
+                      <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
+                        <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
+                          <input type="text" class="form-control form-control-sm border-secondary" id="filterBandSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                        </li>
+                      </ul>
+                      <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterBandUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
+                        <li>
+                          <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                        </li>
+                        <li id="filterBandNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                  <label class="form-label text-secondary small-text text-uppercase">Frequency</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                  <div class="dropdown" id="filterFrequency"> <!-- styled dropdown -->
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterFrequencyBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                      <span id="filterFrequencySelected">All</span> <!-- default button text -->
+                    </button>
+                    <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
+                      <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
+                        <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
+                          <input type="text" class="form-control form-control-sm border-secondary" id="filterFrequencySearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                        </li>
+                      </ul>
+                      <ul class="dropdown-menu-scrollable z-1 overflow-y-auto mb-0 list-unstyled" id="filterFrequencyUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
+                        <li>
+                          <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                        </li>                      
+                        <li id="filterFrequencyNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row g-2 mb-3"> <!-- row with a gutter between columns of 0.75rem and 1rem margin bottom -->
-              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
-                <label class="form-label text-secondary small-text text-uppercase">Band</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
-                <div class="dropdown" id="filterBand"> <!-- styled dropdown -->
-                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterBandBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterBandSelected">All</span> <!-- default button text -->
-                  </button>
-                  <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
-                    <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
-                      <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
-                        <input type="text" class="form-control form-control-sm border-secondary" id="filterBandSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
-                      </li>
-                    </ul>
-                    <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterBandUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
-                      <li>
-                        <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
-                      </li>
-                      <li id="filterBandNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
-                    </ul>
+              <div class="row g-2 mb-3"> <!-- row with a gutter between columns of 0.75rem and 1rem margin bottom -->
+                <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                  <label class="form-label text-secondary small-text text-uppercase" >NB</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                  <div class="dropdown" id="filterNb"> <!-- styled dropdown -->
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterNbBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                      <span id="filterNbSelected">All</span> <!-- default button text -->
+                    </button>
+                    <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
+                      <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
+                        <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
+                          <input type="text" class="form-control form-control-sm border-secondary" id="filterNbSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                        </li>
+                      </ul>
+                      <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterNbUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
+                        <li>
+                          <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                        </li>
+                        <li id="filterNbNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
+                  <label class="form-label text-secondary small-text text-uppercase">Cell</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
+                  <div class="dropdown" id="filterCell"> <!-- styled dropdown -->
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterCellBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
+                      <span id="filterCellSelected">All</span> <!-- default button text -->
+                    </button>
+                    <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
+                      <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
+                        <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
+                          <input type="text" class="form-control form-control-sm border-secondary" id="filterCellSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
+                        </li>
+                      </ul>
+                      <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterCellUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
+                        <li>
+                          <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
+                        </li>
+                        <li id="filterCellNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
-                <label class="form-label text-secondary small-text text-uppercase">Frequency</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
-                <div class="dropdown" id="filterFrequency"> <!-- styled dropdown -->
-                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterFrequencyBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterFrequencySelected">All</span> <!-- default button text -->
-                  </button>
-                  <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
-                    <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
-                      <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
-                        <input type="text" class="form-control form-control-sm border-secondary" id="filterFrequencySearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
-                      </li>
-                    </ul>
-                    <ul class="dropdown-menu-scrollable z-1 overflow-y-auto mb-0 list-unstyled" id="filterFrequencyUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
-                      <li>
-                        <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
-                      </li>                      
-                      <li id="filterFrequencyNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
-                    </ul>
-                  </div>
-                </div>
+              <div class="d-flex justify-content-between align-items-center"> <!-- element which is a flexbox which pushes the two items inside apart and vertically centers the items -->
+                <button id="btnClearFilters" class="btn btn-sm btn-outline-danger">  <!-- button which is styled as a compact outlined danger button -->
+                  Clear filters
+                </button>
+                <button id="btnSaveMap" class="btn btn-sm btn-success"> <!-- button which is styled as a compact success button -->
+                  Save map
+                </button>
               </div>
-            </div>
-            <div class="row g-2 mb-3"> <!-- row with a gutter between columns of 0.75rem and 1rem margin bottom -->
-              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
-                <label class="form-label text-secondary small-text text-uppercase" >NB</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
-                <div class="dropdown" id="filterNb"> <!-- styled dropdown -->
-                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterNbBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterNbSelected">All</span> <!-- default button text -->
-                  </button>
-                  <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
-                    <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
-                      <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
-                        <input type="text" class="form-control form-control-sm border-secondary" id="filterNbSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
-                      </li>
-                    </ul>
-                    <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterNbUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
-                      <li>
-                        <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
-                      </li>
-                      <li id="filterNbNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 mt-0"> <!-- element which spans 6/12 columns and no margin top -->
-                <label class="form-label text-secondary small-text text-uppercase">Cell</label> <!-- styled label with a lighter text color, smaller text size and uppercase text -->
-                <div class="dropdown" id="filterCell"> <!-- styled dropdown -->
-                  <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterCellBtn" data-bs-toggle="dropdown" aria-expanded="false"> <!-- button which is styled as a outlined secondary button with the full width of the parent element, left aligned text and a dropdown arrow-->
-                    <span id="filterCellSelected">All</span> <!-- default button text -->
-                  </button>
-                  <div class="dropdown-menu pt-0 w-100 z-1"> <!-- dropdown menu with no padding top, it fills the full width of the parent element and has a high z-index to be in-front of all map elements-->
-                    <ul class="pt-0 mb-0 list-unstyled"> <!-- list with no padding top, no margin bottom and no default styling -->
-                      <li class="p-2 border-bottom border-secondary-subtle"> <!-- list element for search with a padding from all sides of 0.5rem and a border at the bottom with a subtle style -->
-                        <input type="text" class="form-control form-control-sm border-secondary" id="filterCellSearch" placeholder="Type to search..." autocomplete="off"> <!-- styled text input as a compact form field and a darker border -->
-                      </li>
-                    </ul>
-                    <ul class="dropdown-menu-scrollable overflow-y-auto mb-0 list-unstyled" id="filterCellUL"> <!-- list with a max-height after which it turns into a scrollable list, no margin bottom and no default styling -->
-                      <li>
-                        <a class="dropdown-item" href="#" data-value="">All</a> <!-- styled dropdown item -->
-                      </li>
-                      <li id="filterCellNoResults" class="dropdown-item text-muted d-none user-select-none">No matches found</li> <!-- No results dropdown-item with gray text, not visible by default and not user selectable -->
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center"> <!-- element which is a flexbox which pushes the two items inside apart and vertically centers the items -->
-              <button id="btnClearFilters" class="btn btn-sm btn-outline-danger">  <!-- button which is styled as a compact outlined danger button -->
-                Clear filters
-              </button>
-              <button id="btnSaveMap" class="btn btn-sm btn-success"> <!-- button which is styled as a compact success button -->
-                Save map
-              </button>
             </div>
           </div>
         </div>
@@ -743,6 +745,7 @@
     const configCard = document.getElementById('configCard');
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
+    const csvTooltip = document.getElementById('csvTooltip');
 
     //set the theme on load
     updateTheme(savedTheme, savedTheme === 'light', savedTheme === 'dark');
@@ -1781,6 +1784,10 @@
       localStorage.setItem('savedTheme', newTheme);
       //apply the new theme
       updateTheme(newTheme, newTheme === 'light', newTheme === 'dark');
+    });
+
+    csvTooltip.addEventListener('click', function (event) {
+      event.preventDefault();
     });
 
     function updateTheme(newTheme, isLight, isDark) {
