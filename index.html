@@ -1792,7 +1792,7 @@
     });
 
     mapEl.addEventListener('click', () => {
-      if (cardBody.classList.contains('show')) {
+      if (cardBody.classList.contains('show') && window.innerWidth < 768) {
         //collapse the card body programmatically
         mobileHeader.click();
       }
