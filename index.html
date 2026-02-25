@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <title>Cell Data Viewer</title>
-  <meta name="description" content="Cell Data Viewer by NerdTech is a web tool for viewing, filtering and exporting cell tower data that you have collected.">
+  <meta name="description" content="Cell Data Viewer by NerdTech is a web tool for viewing, filtering and exporting cell tower data that you have collected. It supports CSV files from CellMapper, G-MoN Pro and Tower Collector.">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#212529"/>
   <link rel="icon" type="image/x-icon" href="./assets/resources/file-bar-graph-fill.svg"/>
 
   <link
@@ -737,6 +738,7 @@
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     const browserTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     const savedTheme = localStorage.getItem('savedTheme') || browserTheme;
 
@@ -1799,6 +1801,7 @@
     });
 
     function updateTheme(newTheme, isLight, isDark) {
+      metaThemeColor.setAttribute('content', newTheme === 'light' ? '#CED4DA' : '#212529'); 
       bodyElement.setAttribute('data-bs-theme', newTheme);
       bodyElement.classList.toggle('bg-dark-subtle', isLight);
       contentContainer.classList.toggle('bg-light-subtle', isLight);
